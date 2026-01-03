@@ -25,7 +25,11 @@ import {
   ShieldAlert,
   ArrowRight,
   Search,
-  FilterX
+  FilterX,
+  Sparkles,
+  RefreshCcw,
+  Terminal,
+  Minus
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -56,7 +60,7 @@ const App: React.FC = () => {
   
   // What-If Laboratory State
   const [isLabOpen, setIsLabOpen] = useState(false);
-  const [selectedWhatIf, setSelectedWhatIf] = useState<DecisionPoint | null>(null);
+  const [customWhatIf, setCustomWhatIf] = useState('');
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
@@ -134,6 +138,12 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('chronicles_bookmarks', JSON.stringify([...bookmarks]));
   }, [bookmarks]);
+
+  useEffect(() => {
+    if (isChatOpen && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isChatOpen]);
 
   const progressStats = useMemo(() => {
     const total = HISTORY_EVENTS.length;
@@ -349,12 +359,12 @@ const App: React.FC = () => {
     } finally { setIsLoadingChat(false); }
   };
 
-  const handleSimulateWhatIf = async (point: DecisionPoint) => {
-    setSelectedWhatIf(point);
+  const runSimulation = async (scenario: string) => {
+    if (!scenario.trim()) return;
     setIsSimulating(true);
     setSimulationResult(null);
     try {
-      const result = await simulateAlternativeTimeline(point.eventContext, point.whatIfQuestion);
+      const result = await simulateAlternativeTimeline("General World War context", scenario);
       setSimulationResult(result || "Unable to compute simulation. Data corrupted.");
     } catch (error) {
       console.error("Simulation error:", error);
@@ -552,44 +562,101 @@ const App: React.FC = () => {
           </div>
         </main>
 
-        <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-[100] flex flex-col items-end gap-4 pointer-events-auto max-w-[calc(100vw-2rem)]">
+        {/* Refactored Chatbot UI: Pinned to viewport but with flexible offsets */}
+        <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[150] flex flex-col items-end gap-3 pointer-events-none group">
           {isChatOpen && (
-            <div className="w-[calc(100vw-2rem)] sm:w-[380px] lg:w-[450px] h-[330px] max-h-[50vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
-              <header className="p-4 border-b dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center text-white dark:text-zinc-900"><UserIcon size={14} /></div>
-                  <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-50">Historian AI</h4>
+            <div className="w-[calc(100vw-3rem)] sm:w-[320px] lg:w-[380px] h-[400px] max-h-[60vh] bg-white/90 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 pointer-events-auto origin-bottom-right">
+              <header className="px-4 py-3 border-b dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-800/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-full bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center text-white dark:text-zinc-900">
+                    <UserIcon size={12} />
+                  </div>
+                  <div className="flex flex-col">
+                    <h4 className="text-[10px] font-bold text-zinc-900 dark:text-zinc-50 leading-tight">HISTORIAN AI</h4>
+                    <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-wider">Online</span>
+                  </div>
                 </div>
-                <button onClick={() => setIsChatOpen(false)} className="p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full text-zinc-500 dark:text-zinc-400"><ChevronDown size={18} /></button>
+                <div className="flex items-center gap-1">
+                  <button onClick={() => setIsChatOpen(false)} className="p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg text-zinc-500 dark:text-zinc-400 transition-colors">
+                    <Minus size={14} />
+                  </button>
+                  <button onClick={() => { setIsChatOpen(false); setMessages([]); }} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors">
+                    <X size={14} />
+                  </button>
+                </div>
               </header>
-              <div className="flex-1 overflow-y-auto p-5 space-y-5 bg-white dark:bg-zinc-900">
-                {messages.length === 0 && <p className="text-center text-xs text-zinc-400 dark:text-zinc-600 mt-10">Ask me anything about the Great Wars.</p>}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
+                {messages.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-full text-center space-y-3 opacity-50 px-6">
+                    <MessageSquare size={24} className="text-zinc-400" />
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Ask a specialist about the Great Wars or specific tactical records.</p>
+                  </div>
+                )}
                 {messages.map((m, idx) => (
                   <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] p-3.5 rounded-2xl text-xs ${m.role === 'user' ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200'}`}>
-                      {m.role === 'user' ? m.content : <div className="prose prose-zinc dark:prose-invert"><ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown></div>}
+                    <div className={`max-w-[90%] p-3 rounded-2xl text-[11px] leading-relaxed ${m.role === 'user' ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 rounded-tr-none' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-tl-none border border-zinc-200/50 dark:border-zinc-700/50'}`}>
+                      {m.role === 'user' ? (
+                        m.content 
+                      ) : (
+                        <div className="prose prose-zinc dark:prose-invert prose-xs max-w-none">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
-                {isLoadingChat && <Loader2 size={16} className="animate-spin text-zinc-400 mx-auto" />}
+                {isLoadingChat && (
+                  <div className="flex justify-start">
+                    <div className="bg-zinc-100 dark:bg-zinc-800 p-3 rounded-2xl rounded-tl-none">
+                      <div className="flex gap-1">
+                        <div className="w-1 h-1 bg-zinc-400 rounded-full animate-bounce"></div>
+                        <div className="w-1 h-1 bg-zinc-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                        <div className="w-1 h-1 bg-zinc-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div ref={messagesEndRef} />
               </div>
-              <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="p-4 border-t dark:border-zinc-800 flex items-center gap-3 bg-white dark:bg-zinc-900">
-                <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask historical context..." className="flex-1 bg-zinc-50 dark:bg-zinc-800 py-2.5 px-4 rounded-xl text-xs border border-zinc-200 dark:border-zinc-700 dark:text-zinc-100 focus:outline-none min-w-0" />
-                <button disabled={isLoadingChat || !input.trim()} className="w-10 h-10 rounded-xl bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center shadow-md flex-shrink-0 transition-transform active:scale-90"><Send size={14} /></button>
+              <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="p-3 border-t dark:border-zinc-800 flex items-center gap-2 bg-white dark:bg-zinc-900">
+                <input 
+                  type="text" 
+                  value={input} 
+                  onChange={(e) => setInput(e.target.value)} 
+                  placeholder="Inquire further..." 
+                  className="flex-1 bg-zinc-50 dark:bg-zinc-800 py-2 px-3 rounded-xl text-[11px] font-medium border border-zinc-200 dark:border-zinc-700 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-900/10 dark:focus:ring-white/10" 
+                />
+                <button 
+                  disabled={isLoadingChat || !input.trim()} 
+                  className="w-8 h-8 rounded-lg bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 disabled:opacity-30 transition-all"
+                >
+                  <Send size={12} />
+                </button>
               </form>
             </div>
           )}
-          <button onClick={() => { setIsChatOpen(!isChatOpen); if (selectedEvent) setSelectedEvent(null); }} className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 ${isChatOpen ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100' : 'bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950'}`}>
-            {isChatOpen ? <X size={20} /> : <MessageSquare size={20} />}
-          </button>
+          
+          <div className="flex items-center gap-3">
+            {/* Small status indicator when chat is closed */}
+            {!isChatOpen && messages.length > 0 && (
+              <div className="bg-white dark:bg-zinc-900 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl text-[9px] font-bold uppercase tracking-widest animate-in fade-in slide-in-from-right-2 pointer-events-auto">
+                Session Active
+              </div>
+            )}
+            <button 
+              onClick={() => { setIsChatOpen(!isChatOpen); if (selectedEvent) setSelectedEvent(null); }} 
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-500 hover:scale-110 pointer-events-auto ${isChatOpen ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rotate-90 border border-zinc-200 dark:border-zinc-700' : 'bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 shadow-zinc-950/20 dark:shadow-white/5'}`}
+            >
+              {isChatOpen ? <ChevronDown size={20} /> : <MessageSquare size={20} />}
+            </button>
+          </div>
         </div>
       </div>
 
       {isLabOpen && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md" onClick={() => setIsLabOpen(false)} />
-          <div className="relative bg-white dark:bg-zinc-900 w-full max-w-5xl h-[90vh] overflow-hidden rounded-3xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-800 animate-in zoom-in-95 duration-300">
+          <div className="relative bg-white dark:bg-zinc-900 w-full max-w-6xl h-[92vh] overflow-hidden rounded-3xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-800 animate-in zoom-in-95 duration-300">
             <header className="px-8 py-6 border-b dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -606,74 +673,122 @@ const App: React.FC = () => {
             </header>
             
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-              <aside className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 overflow-x-auto lg:overflow-y-auto p-6 flex lg:flex-col gap-4">
-                <h4 className="hidden lg:block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-6">CRITICAL TURNING POINTS</h4>
-                {DECISION_POINTS.map((point) => (
-                  <button 
-                    key={point.id} 
-                    onClick={() => handleSimulateWhatIf(point)}
-                    className={`flex-shrink-0 w-64 lg:w-full text-left p-4 rounded-2xl border transition-all ${selectedWhatIf?.id === point.id ? 'bg-indigo-500 border-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-indigo-400 text-zinc-700 dark:text-zinc-300'}`}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Zap size={14} className={selectedWhatIf?.id === point.id ? 'text-white' : 'text-indigo-500'} />
-                      <span className="text-sm font-bold truncate">{point.title}</span>
-                    </div>
-                    <p className={`text-[11px] leading-tight line-clamp-2 ${selectedWhatIf?.id === point.id ? 'text-indigo-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
-                      {point.eventContext}
-                    </p>
-                  </button>
-                ))}
+              <aside className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 overflow-x-auto lg:overflow-y-auto p-6 flex lg:flex-col gap-6">
+                <div>
+                  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">SUGGESTED SCENARIOS</h4>
+                  <div className="flex lg:flex-col gap-3">
+                    {DECISION_POINTS.map((point) => (
+                      <button 
+                        key={point.id} 
+                        onClick={() => {
+                          setCustomWhatIf(point.whatIfQuestion);
+                          setSimulationResult(null);
+                        }}
+                        className={`flex-shrink-0 w-64 lg:w-full text-left p-4 rounded-2xl border transition-all ${customWhatIf === point.whatIfQuestion ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-indigo-400 text-zinc-700 dark:text-zinc-300'}`}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <Zap size={14} className="text-indigo-500" />
+                          <span className="text-xs font-bold truncate">{point.title}</span>
+                        </div>
+                        <p className="text-[10px] leading-tight line-clamp-2 text-zinc-500 dark:text-zinc-400">
+                          {point.eventContext}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-auto hidden lg:block p-4 rounded-2xl bg-zinc-900 dark:bg-black text-zinc-400 border border-zinc-800">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Terminal size={12} />
+                    <span className="text-[9px] font-bold uppercase tracking-widest">Archive Link Status</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span className="text-[10px] text-zinc-500">Connected to Chronos-Net</span>
+                  </div>
+                </div>
               </aside>
               
-              <main className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-6 lg:p-10 relative">
-                {!selectedWhatIf ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-6">
-                    <div className="w-20 h-20 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
-                      <ShieldAlert size={40} />
+              <main className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-6 lg:p-12 relative">
+                <div className="max-w-3xl mx-auto space-y-10">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <Sparkles size={20} className="text-indigo-500" />
+                      <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Simulate a Custom Turning Point</h3>
                     </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Initialize Simulation</h3>
-                      <p className="text-sm text-zinc-500 dark:text-zinc-400">Select a historical turning point from the archives to begin alternative timeline analysis.</p>
+                    
+                    <div className="relative group">
+                      <textarea 
+                        value={customWhatIf}
+                        onChange={(e) => setCustomWhatIf(e.target.value)}
+                        placeholder="e.g., What if the Ottoman Empire had remained neutral in WWI?"
+                        className="w-full h-32 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none shadow-inner"
+                      />
+                      <div className="absolute bottom-4 right-4 flex items-center gap-2">
+                        <button 
+                          onClick={() => setCustomWhatIf('')}
+                          className="p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                          title="Clear input"
+                        >
+                          <RefreshCcw size={16} />
+                        </button>
+                        <button 
+                          onClick={() => runSimulation(customWhatIf)}
+                          disabled={!customWhatIf.trim() || isSimulating}
+                          className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-indigo-500/20 disabled:opacity-50 transition-all flex items-center gap-2"
+                        >
+                          {isSimulating ? <Loader2 size={14} className="animate-spin" /> : <Zap size={14} />}
+                          Run Simulation
+                        </button>
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="max-w-3xl mx-auto space-y-12 pb-10">
-                    <div className="space-y-6">
-                      <div className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
-                        SCENARIO LOADED
-                      </div>
-                      <h3 className="text-3xl lg:text-4xl font-bold heading text-zinc-900 dark:text-zinc-50">{selectedWhatIf.whatIfQuestion}</h3>
-                      <div className="h-px w-full bg-gradient-to-r from-indigo-500 to-transparent"></div>
-                    </div>
 
-                    {isSimulating ? (
-                      <div className="flex flex-col items-center justify-center py-20 space-y-6">
-                        <Loader2 size={40} className="animate-spin text-indigo-500" />
-                        <div className="text-center">
-                          <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Simulating Alternative Geopolitics...</p>
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400">Archival AI calculating causality shifts across time-streams.</p>
+                  {isSimulating ? (
+                    <div className="flex flex-col items-center justify-center py-20 space-y-6">
+                      <div className="relative">
+                        <Loader2 size={48} className="animate-spin text-indigo-500" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-ping"></div>
                         </div>
                       </div>
-                    ) : simulationResult ? (
-                      <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
-                        <div className="prose prose-zinc lg:prose-xl dark:prose-invert max-w-none">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{simulationResult}</ReactMarkdown>
+                      <div className="text-center space-y-2">
+                        <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Recalculating Historical Causality...</p>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 italic">"Small changes, massive consequences."</p>
+                      </div>
+                    </div>
+                  ) : simulationResult ? (
+                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 pb-12">
+                      <div className="flex items-center gap-4 mb-8">
+                        <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800"></div>
+                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest px-4">Simulation Results</span>
+                        <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800"></div>
+                      </div>
+                      <div className="prose prose-zinc lg:prose-xl dark:prose-invert max-w-none prose-headings:font-bold prose-p:leading-relaxed prose-li:text-sm">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{simulationResult}</ReactMarkdown>
+                      </div>
+                      <div className="mt-16 p-8 rounded-3xl bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/50 flex flex-col sm:flex-row gap-6 shadow-sm">
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
+                          <ShieldAlert size={24} />
                         </div>
-                        <div className="mt-16 p-6 rounded-3xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 flex flex-col sm:flex-row gap-6">
-                          <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0">
-                            <ShieldAlert size={24} />
-                          </div>
-                          <div className="space-y-2">
-                            <h5 className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase tracking-widest">HISTORIAN'S NOTE</h5>
-                            <p className="text-sm text-amber-700/80 dark:text-amber-500/80 leading-relaxed italic">
-                              This simulation is based on theoretical historical extrapolation. Small changes in chaotic systems can lead to wildly different outcomes than those predicted here.
-                            </p>
-                          </div>
+                        <div className="space-y-3">
+                          <h5 className="text-xs font-bold text-indigo-900 dark:text-indigo-100 uppercase tracking-widest">HISTORIAN'S PROBABILITY ASSESSMENT</h5>
+                          <p className="text-sm text-indigo-700/80 dark:text-indigo-400/80 leading-relaxed italic">
+                            The resulting timeline presented above is a scholarly projection of likely political and military divergence. Alternative outcomes remain theoretically possible within the framework of historical chaos theory.
+                          </p>
                         </div>
                       </div>
-                    ) : null}
-                  </div>
-                )}
+                    </div>
+                  ) : !customWhatIf && (
+                    <div className="py-20 flex flex-col items-center justify-center text-center opacity-40">
+                      <div className="w-24 h-24 rounded-full bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-center mb-6">
+                        <FlaskConical size={48} className="text-zinc-400" />
+                      </div>
+                      <p className="text-zinc-500 font-medium">Draft a question or select a preset to begin exploration.</p>
+                    </div>
+                  )}
+                </div>
               </main>
             </div>
           </div>
@@ -711,7 +826,6 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {/* Unified Height Containers for Narration and Examination */}
                   <div className="flex items-center gap-4 bg-zinc-100 dark:bg-zinc-800/50 p-3 pr-6 rounded-2xl min-w-[320px] h-16 border border-zinc-200 dark:border-zinc-700/50 transition-colors">
                     <button onClick={handleNarrate} disabled={isAudioLoading} className="w-10 h-10 bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 rounded-full flex items-center justify-center hover:scale-105 transition-all flex-shrink-0 shadow-lg">
                       {isAudioLoading ? <Loader2 size={16} className="animate-spin" /> : isNarrating ? <Pause size={18} fill="currentColor" /> : <Play size={18} className="ml-1" fill="currentColor" />}
@@ -768,7 +882,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <footer className="flex-shrink-0 py-10 px-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white dark:bg-zinc-950 gap-4">
+      <footer className="flex-shrink-0 py-10 px-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white dark:bg-zinc-950 gap-4 relative z-[100]">
         <p>© 2024 CHRONICLES OF CONFLICT • SCHOLARLY DIGITAL EDITION</p>
         <div className="flex space-x-8">
           <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">ARCHIVAL METHODS</a>

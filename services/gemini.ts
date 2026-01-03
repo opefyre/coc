@@ -25,17 +25,23 @@ export const simulateAlternativeTimeline = async (context: string, question: str
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `As a scholarly historian, provide an analysis of this alternative historical scenario:
+    contents: `As a scholarly historian specializing in total war and geopolitical strategy, provide a rigorous analysis of this alternative historical turning point.
     
-    CONTEXT: ${context}
-    WHAT IF: ${question}
+    SCENARIO: ${question}
+    ARCHIVAL CONTEXT: ${context}
     
-    Structure your response as follows:
-    1. Immediate Geopolitical Shifts
-    2. Long-term Impact on the War's Outcome
-    3. The Resulting Post-War Reality
+    Please structure your simulation using these headers:
     
-    Keep the tone objective and grounded in historical causality.`,
+    ### 1. The Divergence Point
+    Explain exactly how this change realistically alters the immediate timeline.
+    
+    ### 2. The Chain Reaction
+    Track the cascading geopolitical and military consequences across the different theaters of war.
+    
+    ### 3. The New World Order
+    Describe the global state of affairs 10–20 years after the war's hypothetical conclusion.
+    
+    Maintain an objective, scholarly tone grounded in historical causality and strategic realism. Avoid science fiction tropes; focus on diplomatic and industrial shifts.`,
   });
   return response.text;
 };
