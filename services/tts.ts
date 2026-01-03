@@ -1,5 +1,4 @@
-
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
 
 export const generateNarration = async (text: string) => {
   // Always initialize with process.env.API_KEY directly inside the function
@@ -8,7 +7,7 @@ export const generateNarration = async (text: string) => {
     model: "gemini-2.5-flash-preview-tts",
     contents: [{ parts: [{ text: `Narrate the following historical record with professional, scholarly clarity: ${text}` }] }],
     config: {
-      responseModalities: ['AUDIO'],
+      responseModalities: [Modality.AUDIO],
       speechConfig: {
         voiceConfig: {
           prebuiltVoiceConfig: { voiceName: 'Charon' },

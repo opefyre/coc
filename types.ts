@@ -7,6 +7,7 @@ export interface TimelineEvent {
   title: string;
   shortDescription: string;
   fullContent: string;
+  historicalContext: string; // Broader narrative and long-term impact
   period: WarPeriod;
   location?: string;
   image?: string;

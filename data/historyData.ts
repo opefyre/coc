@@ -41,7 +41,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1870-1871',
     title: 'The Franco-Prussian War',
     shortDescription: 'The unification of Germany and the shift in European power.',
-    fullContent: 'The Franco-Prussian War was the decisive conflict that fundamentally reshaped Europe. Provoked by the Ems Dispatch, Prussia led a coalition of German states against the Second French Empire. The swift Prussian victory at the Battle of Sedan led to the collapse of Napoleon III\'s regime and the subsequent siege of Paris. \n\nThe war\'s conclusion saw the proclamation of the German Empire in the Hall of Mirrors at Versailles, marking the unification of Germany as a dominant continental power. France was forced to cede the industrial territory of Alsace-Lorraine and pay a massive indemnity. This humiliation fueled "revanchism" in France, a driving force in French foreign policy for the next forty years. The conflict ended the era of French hegemony and established a volatile balance of power that necessitated the complex web of alliances that eventually triggered WWI.',
+    fullContent: 'The Franco-Prussian War was the decisive conflict that fundamentally reshaped the European continent. Triggered by the Ems Dispatch—a carefully edited telegram designed by Prussian Chancellor Otto von Bismarck to provoke French outrage—the conflict saw a coalition of German states led by Prussia crush the Second French Empire. The war was characterized by the superior Prussian use of modern technology, including a vast railway network for mobilization and the telegraph for command and control. At the Battle of Sedan, the French army suffered a catastrophic defeat, resulting in the capture of Emperor Napoleon III. This led to the collapse of the monarchy and the declaration of the Third French Republic, which continued a desperate but futile resistance during the grueling Siege of Paris.',
+    historicalContext: 'The aftermath of the war saw the proclamation of the German Empire in the Hall of Mirrors at Versailles, a moment of profound humiliation for France. The annexation of Alsace-Lorraine became a "permanent wound" in the French national psyche, fueling decades of "revanchism." Geopolitically, the war ended centuries of French hegemony in Central Europe and established Germany as the continent\'s preeminent industrial and military power. This radical shift in the balance of power destroyed the old "Concert of Europe" and forced nations into the rigid, defensive alliance blocks that would eventually collide in 1914.',
     period: 'PRE_WWI',
     location: 'Sedan, France',
     coordinates: [49.7027, 4.9407],
@@ -56,7 +57,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1884-1885',
     title: 'The Berlin Conference',
     shortDescription: 'Imperialist competition and the Scramble for Africa.',
-    fullContent: 'Convened by Otto von Bismarck, the Berlin Conference was a pivotal moment in the "New Imperialism." Fourteen nations met to establish rules for the "effective occupation" of African territory, aiming to avoid direct military conflict between European powers. While presented as a humanitarian effort to end the slave trade, it was primarily a diplomatic framework for the systematic exploitation of the continent. \n\nThe conference ignored existing African political, cultural, and linguistic boundaries, leading to artificial borders that remain a source of regional conflict today. By the early 20th century, nearly 90% of Africa was under European control. This aggressive expansionism intensified rivalries between Britain, France, and Germany, as colonial disputes became proxies for European power struggles. The tension over resources and prestige in Africa directly contributed to the pre-war atmosphere of suspicion and competition.',
+    fullContent: 'Convened by Otto von Bismarck to manage the rising tensions among European powers, the Berlin Conference was a watershed moment in global imperialism. Fourteen nations met to establish ground rules for the "effective occupation" of African territory, aiming to prevent direct military conflicts between rivals like Britain, France, and Germany. The conference map-making was performed with almost no regard for existing ethnic, linguistic, or political boundaries on the ground. It formalized the "Scramble for Africa," accelerating the transition from informal influence to direct colonial rule over nearly the entire continent.',
+    historicalContext: 'While the conference may have prevented an immediate war between European powers in the late 19th century, it institutionalized a hyper-competitive imperialist mindset that directly contributed to WWI. The race for resources and strategic ports intensified nationalistic rivalries and created numerous "flashpoints" where European armies stood on the brink of conflict. Events like the Fashoda Incident and the Moroccan Crises were direct outgrowths of the tensions managed—but not resolved—at Berlin. Furthermore, it trained a generation of military officers in aggressive expansionist tactics and established the industrial-extractive model that would power the war machines of the Great Powers.',
     period: 'PRE_WWI',
     location: 'Berlin, Germany',
     coordinates: [52.5200, 13.4050],
@@ -71,12 +73,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1882',
     title: 'The Triple Alliance',
     shortDescription: 'The formation of the first major alliance block.',
-    fullContent: 'In 1882, Germany, Austria-Hungary, and Italy formalized the Triple Alliance. This secret pact was a cornerstone of Bismarck’s defensive diplomacy, intended to isolate France and prevent a two-front war against Germany. The treaty promised mutual military support if any member was attacked by France or Russia. \n\nHowever, this move prompted a counter-reaction. Russia and France, despite their ideological differences, signed the Dual Alliance in 1894. Later, Britain joined this orbit through the Entente Cordiale (1904) and the Anglo-Russian Entente (1907), forming the Triple Entente. By 1907, Europe was effectively divided into two rigid, armed camps. This "Bipolarity" meant that any localized conflict involving one power could mechanically drag the entire continent into a general war, a phenomenon that would be tragically realized in July 1914.',
+    fullContent: 'In 1882, Germany, Austria-Hungary, and Italy formalized the Triple Alliance, a secret pact that became a cornerstone of Bismarck’s intricate diplomatic system. The treaty was ostensibly defensive: Germany and Austria-Hungary pledged to assist Italy if she were attacked by France, and Italy pledged to support Germany if it were attacked by France. It was a masterpiece of realpolitik designed to isolate France and ensure that any future conflict would not result in a two-front war for the newly unified Germany. However, the secret nature of the pact and the conflicting interests of its members—particularly between Italy and Austria over Balkan territories—made it a brittle foundation for peace.',
+    historicalContext: 'The Triple Alliance fundamentally altered European diplomacy by creating a rigid, "bipolar" state system. When Russia and France responded with their own Dual Alliance in 1894, the continent was effectively divided into two armed camps. This system removed the diplomatic flexibility that had characterized the 19th century. Instead of acting as independent mediators, the Great Powers became hostages to their allies\' local and regional disputes. The "blank check" Germany gave to Austria-Hungary in July 1914 was the final, mechanical consequence of a treaty system that prioritized alliance loyalty over rational crisis management.',
     period: 'PRE_WWI',
     location: 'Vienna, Austria',
     coordinates: [48.2082, 16.3738],
     sources: [
-      'Clark, C. (2012). The Sleepwalkers: How Europe Went to War in 1914.',
+      'Clark, C. (2012). The Sleepwalkers.',
       'McMeekin, S. (2011). The Russian Origins of the First World War.',
       'Taylor, A. J. P. (1954). The Struggle for Mastery in Europe.'
     ]
@@ -86,12 +89,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1906',
     title: 'Launch of HMS Dreadnought',
     shortDescription: 'The start of the naval arms race.',
-    fullContent: 'The launch of HMS Dreadnought by the British Royal Navy revolutionized maritime warfare. Featuring an "all-big-gun" armament and revolutionary steam turbine propulsion, she was faster and more heavily armed than any ship in existence, effectively making all other battleships obsolete overnight. \n\nThis triggered a frantic naval arms race with Germany. Kaiser Wilhelm II and Admiral von Tirpitz viewed a powerful fleet as essential to "Weltpolitik" (World Policy) and challenged British maritime supremacy. For Britain, the navy was the vital artery of its global empire. The resulting competition drained national treasuries and poisoned diplomatic relations. The naval race became a focal point of public anxiety and nationalism, convincing many in Britain that Germany was the primary threat to their national survival, well before the territorial disputes of 1914.',
+    fullContent: 'The launch of HMS Dreadnought by the British Royal Navy was an industrial event of such magnitude that it gave its name to an entire class of warships. Featuring an "all-big-gun" armament of ten 12-inch guns and revolutionary steam turbine propulsion, she was faster, more heavily armored, and more powerful than any ship previously built. Crucially, Dreadnought rendered all existing battleships—including the entire British fleet—obsolete overnight. This "reset" allowed Germany to compete on more even terms with the world\'s leading naval power, triggering a frantic, multi-billion-pound construction race that would strain the economies of both empires.',
+    historicalContext: 'The Anglo-German naval race was the psychological engine that drove Britain toward war. For centuries, British security had rested on the "Two-Power Standard," requiring the Royal Navy to be larger than the next two combined. Germany\'s attempt to challenge this maritime hegemony convinced the British public and government that Germany was not merely a commercial rival, but an existential threat. This industrial competition militarized British society, forced the government to abandon its policy of "Splendid Isolation," and directly led to the formation of the Entente Cordiale with France—an alliance that would draw Britain into the continental war in 1914.',
     period: 'PRE_WWI',
     location: 'Portsmouth, UK',
     coordinates: [50.8167, -1.0833],
     sources: [
-      'Massie, R. K. (1991). Dreadnought: Britain, Germany, and the Coming of the Great War.',
+      'Massie, R. K. (1991). Dreadnought.',
       'Lambert, N. A. (1999). Sir John Fisher\'s Naval Revolution.',
       'Padfield, P. (1974). The Great Naval Race.'
     ]
@@ -101,12 +105,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1908-1913',
     title: 'The Balkan Crises',
     shortDescription: 'The "Powder Keg of Europe" begins to smoke.',
-    fullContent: 'The decline of the Ottoman Empire created a power vacuum in the Balkans, which became the most volatile region in Europe. The 1908 Bosnian Crisis, where Austria-Hungary annexed Bosnia-Herzegovina, infuriated Serbia and its protector, Russia. This was followed by the Balkan Wars of 1912-1913, which saw the Balkan League (Serbia, Greece, Montenegro, and Bulgaria) drive the Ottomans out of most of Europe. \n\nSerbia emerged from these conflicts nearly doubled in size and fueled by aggressive Pan-Slavic nationalism. Austria-Hungary viewed a strong Serbia as an existential threat to its own multi-ethnic empire. Russia, having suffered humiliation in 1908, felt it could not back down again without losing its Great Power status. By 1914, the diplomatic atmosphere was highly combustible, with major powers prepared to risk war over regional Balkan interests to maintain their prestige and strategic positions.',
+    fullContent: 'The decline of the Ottoman Empire, often called the "Sick Man of Europe," created a dangerous power vacuum in the Balkan Peninsula. The 1908 Bosnian Crisis, triggered by Austria-Hungary\'s sudden annexation of Bosnia and Herzegovina, outraged Serbian nationalists and their Russian patrons. This was followed by the Balkan Wars of 1912-1913, where regional states like Serbia, Bulgaria, and Greece joined forces to expel the Ottomans from nearly all their European holdings. However, the subsequent infighting over the spoils of victory only heightened ethnic tensions and local rivalries, leaving the region deeply unstable and heavily militarized.',
+    historicalContext: 'These crises transformed the Balkans into the primary flashpoint where the strategic interests of Austria-Hungary and Russia directly collided. Serbia emerged from these wars as a confident regional power with Pan-Slavic ambitions, which Austria-Hungary viewed as a mortal threat to its multi-ethnic stability. By 1914, both Russia and Austria felt they had suffered significant diplomatic humiliations in the region and could not afford to back down again. The Balkans were no longer a peripheral concern; they had become the specific theater where a local dispute was almost guaranteed to escalate into a general European war.',
     period: 'PRE_WWI',
     location: 'The Balkans',
     coordinates: [42.0000, 21.0000],
     sources: [
-      'Glenny, M. (1999). The Balkans: Nationalism, War, and the Great Powers.',
+      'Glenny, M. (1999). The Balkans.',
       'Fromkin, D. (2004). Europe\'s Last Summer.',
       'Bridge, F. R. (1990). The Great Powers and the European States System.'
     ]
@@ -118,7 +123,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'June 28, 1914',
     title: 'The Assassination in Sarajevo',
     shortDescription: 'The spark that ignited the Great War.',
-    fullContent: 'On a state visit to Sarajevo, Archduke Franz Ferdinand, heir to the Austro-Hungarian throne, was assassinated by Gavrilo Princip, a 19-year-old Serbian nationalist and member of the "Black Hand." The assassination was intended to strike a blow for South Slav liberation from Austrian rule. \n\nThis event triggered the "July Crisis." Austria-Hungary, supported by Germany’s "blank check," issued a harsh ultimatum to Serbia. When Serbia did not fully comply, Austria declared war. The subsequent mobilization of Russia in support of Serbia forced Germany to activate the Schlieffen Plan, leading to the invasion of neutral Belgium and Britain\'s entry into the war. Within weeks, the rigid alliance systems of the previous decades had turned a regional assassination into a global catastrophe. It remains the archetypal example of how miscalculation and diplomatic failure can lead to unintended total war.',
+    fullContent: 'On a summer morning in Sarajevo, Archduke Franz Ferdinand, heir to the Austro-Hungarian throne, and his wife Sophie were assassinated by Gavrilo Princip, a 19-year-old Serbian nationalist. Princip was a member of "Young Bosnia," a group supported by the "Black Hand," a secret society within the Serbian military. The assassination was a sequence of extraordinary coincidences: an earlier bomb attempt had failed, and the Archduke\'s car only came to a halt in front of Princip after taking a wrong turn during a revised route. These two pistol shots triggered the "July Crisis," a month-long diplomatic failed-state that saw the Great Powers mobilize their massive industrial armies.',
+    historicalContext: 'Sarajevo represents the catastrophic failure of 19th-century "Old Diplomacy" and the dangerous intersection of ethnic nationalism and imperial pride. The event demonstrated how a single act of political terror could bypass the intricate safeguards of the international system. The legacy of these shots was the total destruction of the world order: four major empires (German, Austro-Hungarian, Ottoman, and Russian) would vanish within four years. The redrawing of the map that followed—creating modern nations like Iraq, Syria, Poland, and Czechoslovakia—set the stage for nearly every major conflict of the 20th and 21st centuries.',
     period: 'WWI',
     location: 'Sarajevo, Bosnia',
     coordinates: [43.8563, 18.4131],
@@ -133,13 +139,14 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'September 1914',
     title: 'The Battle of the Marne',
     shortDescription: 'The end of movement and the start of the stalemate.',
-    fullContent: 'The Battle of the Marne was one of the most significant strategic victories in military history. The German advance through Belgium and northern France had brought them within sight of Paris. However, a counter-offensive by French and British forces exploited a gap in the German lines. The "Miracle of the Marne" forced the German army into a general retreat to the Aisne River. \n\nThis defeat signaled the failure of the Schlieffen Plan, which relied on a swift victory over France to avoid a two-front war. The ensuing "Race to the Sea" saw both sides attempt to outflank each other, eventually resulting in a continuous line of trenches stretching from the Swiss border to the North Sea. The war of movement was over; the era of static, industrial trench warfare had begun, a stalemate that would define the Western Front for the next four years.',
+    fullContent: 'Just weeks into the war, the German army seemed on the verge of capturing Paris and fulfilling the "Schlieffen Plan." However, a gap opened between the German First and Second Armies, which was exploited by a desperate French and British counter-attack along the Marne River. In a famous display of national emergency, 600 Parisian taxicabs were used to ferry reinforcements to the front. The "Miracle of the Marne" forced the German forces into a general retreat to the Aisne River. This signaled the definitive failure of Germany\'s hope for a swift, decisive victory and led to the "Race to the Sea," where both sides attempted to outflank each other until they reached the Belgian coast.',
+    historicalContext: 'The Marne ensured that WWI would not be a "short war" that would be "over by Christmas." By forcing the conflict into a tactical stalemate, it necessitated the total mobilization of domestic economies and civilian populations—marking the birth of "Total War." The battle established the Western Front as a continuous line of trenches from the Swiss border to the North Sea, a static nightmare that would consume millions of lives. The strategic failure of the German offensive here eventually led to the long war of attrition that the Central Powers, with their limited resources, were ultimately destined to lose.',
     period: 'WWI',
     location: 'The Marne, France',
     coordinates: [48.9167, 4.3667],
     sources: [
       'Tuchman, B. (1962). The Guns of August.',
-      'Strachan, H. (2001). The First World War: Volume I: To Arms.',
+      'Strachan, H. (2001). The First World War.',
       'Herwig, H. H. (2009). The Marne, 1914.'
     ]
   },
@@ -148,12 +155,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1916',
     title: 'The Battles of Verdun and the Somme',
     shortDescription: 'The grueling height of industrial attrition.',
-    fullContent: '1916 was defined by two massive battles of attrition on the Western Front. At Verdun, German Chief of Staff Erich von Falkenhayn aimed to "bleed France white" by attacking a site of immense symbolic importance. The ten-month battle became a symbol of French resistance ("Ils ne passeront pas") but resulted in over 700,000 casualties for both sides combined. \n\nTo relieve pressure on Verdun, the British launched the Battle of the Somme. On the first day alone, the British Army suffered 57,000 casualties—the bloodiest day in its history. The battle introduced the tank but ended with both sides exhausted and only a few miles of ground gained. These battles demonstrated the horrific reality of modern industrial warfare, where massed artillery and machine guns made traditional offensive tactics suicidal. They left an indelible mark on the collective memory of Europe, symbolizing the senselessness of the conflict.',
+    fullContent: 'The year 1916 saw industrial warfare reach its horrific zenith. At Verdun, German Chief of Staff Erich von Falkenhayn launched an offensive designed to "bleed the French army white" by attacking a point of national pride. The resulting ten-month battle was a "mincing machine" of artillery and flamethrowers. To relieve the pressure on Verdun, the British launched the Battle of the Somme. On the first day alone, the British army suffered 60,000 casualties—the bloodiest day in its history. These battles introduced new horrors, including the first use of tanks and large-scale poison gas attacks, yet resulted in only a few miles of territorial gain for nearly two million casualties.',
+    historicalContext: 'These battles fundamentally altered the human psyche and the social contract regarding war. Verdun became the ultimate symbol of French national resilience and sacrifice, while the Somme left a permanent scar on the British collective consciousness, destroying an entire generation of volunteers. Strategically, 1916 proved that victory would no longer be determined by tactical maneuvers or individual heroism, but by sheer industrial capacity, manpower reserves, and the ability of a society to endure unprecedented suffering. This led to the "War Economy" footing of 1917, where the home front became as critical as the battlefront.',
     period: 'WWI',
     location: 'Verdun, France',
     coordinates: [49.1667, 5.3833],
     sources: [
-      'Horne, A. (1962). The Price of Glory: Verdun 1916.',
+      'Horne, A. (1962). The Price of Glory.',
       'Prior, R., & Wilson, T. (2005). The Somme.',
       'Keegan, J. (1976). The Face of Battle.'
     ]
@@ -163,7 +171,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1917',
     title: 'The Russian Revolution and Withdrawal',
     shortDescription: 'The collapse of the Eastern Front.',
-    fullContent: 'By 1917, the Russian Empire was on the brink of collapse due to catastrophic military losses and internal economic ruin. The February Revolution overthrew the Tsar, but the Provisional Government\'s decision to continue the war led to further instability. In October, the Bolsheviks, led by Lenin, seized power and immediately sought peace. \n\nIn early 1918, Russia signed the Treaty of Brest-Litovsk, ceding vast territories to the Central Powers. This was a massive strategic shift; Germany was finally able to move its Eastern armies to the West for a final, decisive offensive before American manpower could arrive in force. However, the revolution also introduced a new ideological force—communism—into international politics, creating a "Red Scare" in the West and setting the stage for the ideological conflicts of the rest of the century.',
+    fullContent: 'Years of military failure, catastrophic losses, and domestic starvation led to the collapse of the Romanov dynasty in February 1917. The subsequent Provisional Government\'s decision to continue the war was deeply unpopular, allowing Vladimir Lenin and the Bolsheviks to seize power in the October Revolution. Seeking to consolidate their new regime, the Bolsheviks signed the Treaty of Brest-Litovsk with the Central Powers. This draconian treaty forced Russia to cede vast territories, including Ukraine, the Baltic states, and Finland, effectively ending the war on the Eastern Front and allowing Germany to transfer its veteran divisions to the West for a final, decisive blow.',
+    historicalContext: 'Russia\'s withdrawal briefly gave the Central Powers a realistic strategic chance for victory, but it also introduced a new, explosive ideological element to the conflict. The birth of the Soviet Union created a permanent ideological fault line in Europe that would define the 20th century. The "Red Scare" that followed WWI shaped Western domestic politics and led to the long-term isolation of the USSR. This geopolitical tension was a primary driver of the instability during the interwar period and provided a core element of the Nazi Party\'s propaganda as they rose to power in Germany.',
     period: 'WWI',
     location: 'Petrograd, Russia',
     coordinates: [59.9343, 30.3351],
@@ -178,12 +187,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'August-November 1918',
     title: 'The Hundred Days Offensive',
     shortDescription: 'The final collapse of the Central Powers.',
-    fullContent: 'Following the failure of the German Spring Offensive, the Allies launched a massive counter-attack known as the Hundred Days Offensive. Using new tactics that integrated infantry, tanks, aircraft, and massed artillery, the Allies broke the Hindenburg Line and forced the German army into a chaotic retreat. \n\nSimultaneously, Germany’s allies were collapsing: Bulgaria, the Ottoman Empire, and finally Austria-Hungary signed separate armistices. Inside Germany, the "Kiel Mutiny" and widespread strikes led to the abdication of the Kaiser and the proclamation of a republic. On November 11, 1918, Germany signed an armistice with the Allies. The war was over, but the suddenness of the collapse led to the "Dolchstoßlegende" (Stab-in-the-back myth)—the false belief that the German army had not been defeated on the battlefield but betrayed at home, a narrative Hitler would later exploit.',
+    fullContent: 'Following the failure of the German "Spring Offensive," the Allied forces launched a massive, coordinated counter-attack known as the Hundred Days Offensive. Utilizing new "combined arms" tactics—integrating massed tanks, synchronized air support, and sophisticated artillery—the Allies broke through the Hindenburg Line. Simultaneously, Germany\'s allies (Bulgaria, the Ottoman Empire, and Austria-Hungary) collapsed under internal and external pressure. As the German army retreated and domestic revolution threatened Berlin, Kaiser Wilhelm II was forced to abdicate. On November 11, 1918, an armistice was signed in a railway carriage at Compiègne, ending the fighting.',
+    historicalContext: 'The suddenness of the German collapse, occurring while their troops still occupied foreign territory, had profound political consequences. It gave birth to the "Dolchstoßlegende" or "stab-in-the-back" myth—the false narrative that the German army remained undefeated on the battlefield but was betrayed at home by Jews, socialists, and "November Criminals." This myth became the foundational propaganda tool for the rise of Adolf Hitler and the Nazi Party. The Hundred Days established the blueprint for modern mechanized warfare, but the bitterness of the defeat and the perceived "betrayal" ensured that the peace of 1918 would be fragile.',
     period: 'WWI',
     location: 'Amiens, France',
     coordinates: [49.8942, 2.2957],
     sources: [
-      'Lloyd, N. (2013). Hundred Days: The End of the Great War.',
+      'Lloyd, N. (2013). Hundred Days.',
       'Travers, T. (1987). The Killing Ground.',
       'Sheffield, G. (2001). Forgotten Victory.'
     ]
@@ -195,7 +205,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1919',
     title: 'The Treaty of Versailles',
     shortDescription: 'The flawed foundation of the new world order.',
-    fullContent: 'The Treaty of Versailles was the primary peace treaty that ended WWI. Negotiated by the "Big Three" (Wilson, Lloyd George, and Clemenceau), it aimed to reconstruct Europe and prevent future wars. It established the League of Nations, an ambitious but ultimately weak organization for international cooperation. \n\nHowever, the treaty was widely criticized as too harsh to be enduring and too lenient to be effective. Germany was forced to accept "War Guilt," pay astronomical reparations, and suffer significant territorial losses. This created deep-seated resentment and economic instability in the nascent Weimar Republic. In the United States, the Senate rejected the treaty and the League of Nations, signaling a return to isolationism. The treaty failed to address the underlying causes of conflict and left many European borders contested, providing fertile ground for the rise of nationalist and revisionist powers in the 1930s.',
+    fullContent: 'The Treaty of Versailles was the primary peace document that formally ended WWI. Negotiated by the "Big Three"—Lloyd George of Britain, Clemenceau of France, and Wilson of the USA—it was a complex compromise between high-minded idealism and a desire for security and retribution. The treaty established the League of Nations, intended to prevent future wars through collective security. However, it also included the controversial Article 231 (the "War Guilt Clause"), which forced Germany to accept sole responsibility for the war and pay massive financial reparations that would cripple its economy for a decade.',
+    historicalContext: 'Versailles is widely considered one of the great failures of 20th-century diplomacy. By stripping Germany of its pride and economic stability without permanently breaking its long-term industrial potential, it created a powerful, revisionist state with a deep-seated grievance. The US Senate\'s refusal to ratify the treaty or join the League of Nations left the new international order without its most powerful guarantor. Instead of a lasting peace, the treaty essentially established a "twenty-year armistice," creating the very economic and political conditions that allowed fascism to thrive in the 1930s.',
     period: 'INTERWAR',
     location: 'Versailles, France',
     coordinates: [48.8049, 2.1204],
@@ -210,14 +221,15 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1922',
     title: 'The March on Rome',
     shortDescription: 'The birth of Fascism as a state power.',
-    fullContent: 'In October 1922, Benito Mussolini and his "Blackshirts" organized a mass demonstration to seize power in Italy. Fearing civil war, King Victor Emmanuel III invited Mussolini to form a government. This event marked the birth of the first Fascist state, a radical alternative to both liberal democracy and Soviet communism. \n\nFascism emphasized extreme nationalism, militarism, and the absolute authority of the leader (Il Duce). Mussolini’s success inspired similar movements across Europe, most notably Adolf Hitler’s Nazi Party in Germany. Italy’s transformation into a totalitarian state signaled the beginning of the "crisis of democracy" in the interwar period. Mussolini’s aggressive foreign policy, aimed at recreating the Roman Empire, would later destabilize the League of Nations and lead Italy into a fatal alliance with Nazi Germany.',
+    fullContent: 'Amidst the chaos of the "Biennio Rosso" (the Two Red Years) of socialist unrest, Benito Mussolini and his National Fascist Party organized a massive paramilitary demonstration known as the March on Rome. Thousands of "Blackshirts" began to converge on the capital, threatening a coup d\'état. Fearing civil war, King Victor Emmanuel III refused to declare martial law and instead invited Mussolini to form a government. Although the "march" itself was largely symbolic and occurred after Mussolini was appointed Prime Minister, it was successfully mythologized as a violent seizure of power that saved Italy from communism.',
+    historicalContext: 'The March on Rome provided the global template for modern totalitarianism. Mussolini successfully combined mass media, paramilitary violence, and nationalist mythology to create a new form of "leader-worship." His apparent success in restoring "order" and national prestige fascinated and inspired observers around the world, most notably Adolf Hitler, who would attempt to mimic the tactic in his failed Beer Hall Putsch a year later. This event marked the beginning of the democratic retreat in Europe and the emergence of a violent, authoritarian alternative to both liberal democracy and Soviet communism.',
     period: 'INTERWAR',
     location: 'Rome, Italy',
     coordinates: [41.9028, 12.4964],
     sources: [
       'Bosworth, R. J. B. (2002). Mussolini.',
-      'Morgan, P. (2003). Fascism in Europe, 1919-1945.',
-      'Lyttelton, A. (1973). The Seizure of Power: Fascism in Italy, 1919-1929.'
+      'Morgan, P. (2003). Fascism in Europe.',
+      'Lyttelton, A. (1973). The Seizure of Power.'
     ]
   },
   {
@@ -225,7 +237,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1938',
     title: 'The Munich Agreement',
     shortDescription: 'The peak and failure of Appeasement.',
-    fullContent: 'The Munich Agreement was a settlement reached by Germany, Britain, France, and Italy that permitted German annexation of the Sudetenland in western Czechoslovakia. British Prime Minister Neville Chamberlain returned to London proclaiming "Peace for our time," believing that satisfying Hitler’s territorial demands would prevent another world war. \n\nHowever, Czechoslovakia—a sovereign democracy—was not even invited to the conference. The agreement is now the primary historical symbol of the failure of "Appeasement." Instead of satiating Hitler, it convinced him of the weakness of the Western democracies and emboldened him to seize the rest of Czechoslovakia just months later. The betrayal of Czechoslovakia also convinced Stalin that Britain and France were unreliable allies, leading him to seek a secret deal with Hitler in 1939. Munich was the final major diplomatic effort to avoid war; its failure made a general conflict inevitable.',
+    fullContent: 'In September 1938, as Hitler threatened war over the Sudetenland—a German-speaking region of Czechoslovakia—the leaders of Britain, France, and Italy met in Munich to find a peaceful solution. In a stunning display of "Appeasement," British Prime Minister Neville Chamberlain and French Premier Édouard Daladier agreed to Hitler\'s demands, permitting the German annexation of the territory in exchange for a promise of no further expansion. The Czechoslovakian government was not even invited to the meeting. Chamberlain returned to London famously waving a piece of paper and declaring he had achieved "peace for our time."',
+    historicalContext: 'Munich has become the definitive historical lesson on the dangers of negotiating with aggressive dictators from a position of perceived weakness. Its failure demonstrated that Hitler\'s ambitions were not rational or limited to national self-determination. Legally, the agreement signaled the final death of the League of Nations\' principle of collective security. Strategically, it convinced Joseph Stalin that the Western democracies would never stand up to Hitler, directly leading to the cynical Nazi-Soviet Non-Aggression Pact of 1939, which cleared the way for the invasion of Poland.',
     period: 'INTERWAR',
     location: 'Munich, Germany',
     coordinates: [48.1351, 11.5820],
@@ -242,12 +255,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'September 1939',
     title: 'The Invasion of Poland',
     shortDescription: 'The start of WWII and the new era of movement.',
-    fullContent: 'On September 1, 1939, Germany invaded Poland, utilizing "Blitzkrieg" (Lightning War)—a revolutionary doctrine that integrated massed tanks, motorized infantry, and air power to bypass and envelop enemy forces. Two weeks later, following the secret protocols of the Molotov-Ribbentrop Pact, the Soviet Union invaded from the East. \n\nBritain and France, honoring their guarantees to Poland, declared war on Germany on September 3. This event ended the "Phoney War" and marked the beginning of World War II. The rapid collapse of Poland shocked the world and demonstrated that the static trench warfare of the past was over. The coordination of the Luftwaffe (air force) with Panzers (tanks) established a military template that would allow Germany to dominate the continent for the next three years. For the Polish people, it marked the beginning of a brutal six-year occupation characterized by unprecedented atrocities.',
+    fullContent: 'At dawn on September 1, 1939, Germany launched a massive invasion of Poland, justified by a staged "false flag" operation at a radio station in Gleiwitz. This campaign saw the debut of "Blitzkrieg" (Lightning War)—a revolutionary tactical concept combining concentrated Panzer divisions, motorized infantry, and overwhelming air support from the Luftwaffe. The speed and violence of the German advance paralyzed Polish communications and command. Two weeks later, following the secret protocols of the Nazi-Soviet Pact, the Soviet Union invaded from the East. Despite a desperate defense, Poland was carved up between the two totalitarian powers in just over a month.',
+    historicalContext: 'The invasion of Poland ended the era of static, trench-based warfare that had dominated the Great War. It proved that modern industrial nations could achieve decisive military results in weeks rather than years through technological coordination. For the international order, it was the final proof that the guarantees of the Treaty of Versailles and the League of Nations were worthless. Britain and France, finally recognizing the existential threat, declared war on Germany, transforming a regional conflict into the most destructive global struggle in human history.',
     period: 'WWII',
     location: 'Westerplatte, Poland',
     coordinates: [54.4075, 18.6672],
     sources: [
-      'Moorhouse, R. (2019). First to Fight: The Polish War 1939.',
+      'Moorhouse, R. (2019). First to Fight.',
       'Keegan, J. (1989). The Second World War.',
       'Frieser, K. H. (2005). The Blitzkrieg Legend.'
     ]
@@ -257,7 +271,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'May-June 1940',
     title: 'The Fall of France and Dunkirk',
     shortDescription: 'The collapse of the Western Allies.',
-    fullContent: 'In May 1940, Germany bypassed the "impenetrable" Maginot Line by attacking through the Ardennes Forest. The Allied armies were split, and the British Expeditionary Force (BEF) was pinned against the sea. Operation Dynamo—the evacuation from Dunkirk—successfully rescued over 330,000 troops using a fleet of naval and civilian vessels, a "miracle" that preserved the core of the British army. \n\nHowever, France was defeated in just six weeks. The fall of the world’s most prestigious land power left Britain to face Nazi Germany alone. The subsequent armistice divided France into an occupied zone and the collaborationist Vichy regime. This victory gave Hitler control over Western Europe and access to the Atlantic ports, fundamentally changing the strategic landscape of the war and forcing Britain into a desperate struggle for survival in the air and at sea.',
+    fullContent: 'In May 1940, Germany launched a brilliant but risky offensive in the West. Bypassing the formidable Maginot Line by striking through the "impassable" Ardennes Forest, German Panzer divisions raced to the English Channel, cutting off the Allied armies in Belgium. This led to the desperate evacuation at Dunkirk, where a flotilla of over 800 "little ships"—civilian fishing boats, yachts, and lifeboats—helped rescue 338,000 British and French troops under constant aerial bombardment. However, the French army, the supposed strongest in Europe, collapsed in just six weeks, and a pro-German "Vichy" regime was established in the south.',
+    historicalContext: 'The fall of France was perhaps the most shocking military event of the 20th century. It shattered the global balance of power and left the British Empire to face the Axis powers alone. The loss of the French fleet and industrial base necessitated the U.S. transition to a "war economy" long before its formal entry into the conflict. Strategically, it meant that any return to the European continent would require a massive, multi-year amphibious preparation, forcing the Western Allies into long peripheral campaigns in North Africa and Italy to wear down German strength.',
     period: 'WWII',
     location: 'Dunkirk, France',
     coordinates: [51.0333, 2.3667],
@@ -272,12 +287,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'June 1941',
     title: 'Operation Barbarossa',
     shortDescription: 'The invasion of the Soviet Union.',
-    fullContent: 'Violating the non-aggression pact, Hitler launched Operation Barbarossa, the largest land invasion in history. Over three million German and Axis troops attacked the Soviet Union on a 2,000-mile front. Hitler viewed the conflict as a "War of Annihilation" to secure "Lebensraum" (living space) and destroy the "Judeo-Bolshevik" threat. \n\nInitially, the Soviet Red Army suffered catastrophic losses, with entire armies encircled and destroyed. However, the sheer size of the USSR, the scorched-earth policy, and the eventual onset of the brutal Russian winter halted the German advance at the gates of Moscow. Barbarossa opened the Eastern Front, a theater characterized by unprecedented scale and brutality, which would consume 80% of German military resources. It was here that the war would eventually be won and lost, turning a European conflict into a titanic struggle between two totalitarian superpowers.',
+    fullContent: 'In June 1941, Adolf Hitler launched Operation Barbarossa, the largest land invasion in human history. Over three million German and Axis troops, supported by thousands of tanks and aircraft, surged across a 2,000-mile front into the Soviet Union. This was not a traditional war for territory, but a "Vernichtungskrieg" (War of Annihilation) driven by Nazi racial ideology. Hitler sought "Lebensraum" (Living Space) for the German people and intended to destroy the "Judeo-Bolshevik" regime. The Red Army, decimated by Stalin\'s pre-war purges, suffered catastrophic losses in the opening months, losing entire army groups in massive encirclements at Minsk and Kiev.',
+    historicalContext: 'Barbarossa transformed WWII from a European struggle into a titanic, ideological conflict between two totalitarian giants. The Eastern Front became the primary theater of the war, where over 80% of German military casualties would eventually occur. Its legacy is the ultimate industrial and demographic exhaustion of Germany and the emergence of the Soviet Union as a superpower. The sheer scale of the atrocities committed during the invasion, including the systematic mass murder of Jews by the Einsatzgruppen, solidified the war\'s place as the most profound moral catastrophe of the modern era.',
     period: 'WWII',
     location: 'Brest-Litovsk, Belarus',
     coordinates: [52.1333, 23.6667],
     sources: [
-      'Glantz, D. M. (2001). Barbarossa: Hitler\'s Invasion of Russia 1941.',
+      'Glantz, D. M. (2001). Barbarossa.',
       'Beevor, A. (2012). The Second World War.',
       'Erickson, J. (1975). The Road to Stalingrad.'
     ]
@@ -287,7 +303,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'June 1942',
     title: 'The Battle of Midway',
     shortDescription: 'The turning point of the Pacific War.',
-    fullContent: 'The Battle of Midway was the most important naval engagement of the Pacific Theater. Using code-breaking intelligence, the U.S. Navy intercepted a massive Japanese strike force intended to seize the Midway atoll. In a decisive clash of aircraft carriers, the U.S. sank four Japanese carriers, effectively neutralizing the Imperial Japanese Navy’s offensive capability. \n\nMidway halted Japanese expansion and restored the balance of naval power in the Pacific. It proved that the aircraft carrier had replaced the battleship as the primary weapon of maritime war. Following Midway, the U.S. began its "Island Hopping" campaign, systematically seizing strategic bases to move closer to the Japanese home islands. For Japan, it was a blow from which their industrial base could never fully recover, marking the shift from strategic dominance to a desperate defensive struggle.',
+    fullContent: 'Just six months after Pearl Harbor, the Japanese Imperial Navy attempted to lure the remaining U.S. aircraft carriers into a decisive trap at Midway Atoll. However, U.S. naval intelligence had successfully broken the Japanese naval code, allowing Admiral Nimitz to ambush the ambushers. In a chaotic and legendary engagement, U.S. SBD Dauntless dive bombers caught the Japanese carriers with their decks full of fueled and armed aircraft. In just five critical minutes, three Japanese carriers were mortally wounded, with a fourth following shortly after. The U.S. lost only the carrier USS Yorktown.',
+    historicalContext: 'Midway was the definitive turning point of the Pacific War. It shattered the Japanese Navy\'s offensive capability and ended its string of naval victories. Strategically, it shifted the initiative to the United States, allowing for the start of the "island-hopping" campaign at Guadalcanal. Technically, the battle signaled the end of the "battleship era," proving that air power was now the dominant factor in maritime security. The loss of veteran Japanese pilots and skilled aircraft mechanics was a demographic blow from which the Empire of Japan never fully recovered.',
     period: 'WWII',
     location: 'Midway Atoll',
     coordinates: [28.2101, -177.3761],
@@ -302,7 +319,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1942-1943',
     title: 'The Battle of Stalingrad',
     shortDescription: 'The turning point of the Eastern Front.',
-    fullContent: 'The Battle of Stalingrad was the bloodiest engagement in human history, claiming nearly two million lives. For five months, Soviet and German forces fought a brutal house-to-house "Rattenkrieg" (war of the rats) in the ruins of the city. In November 1942, a massive Soviet pincer movement (Operation Uranus) surrounded the German 6th Army. \n\nDefying Hitler\'s orders to fight to the last man, Field Marshal Friedrich Paulus surrendered in February 1943. The defeat was a catastrophic psychological and military blow to Nazi Germany. It shattered the myth of German invincibility and marked the end of their eastward advance. From Stalingrad onwards, the Soviet Red Army began a relentless westward push that would eventually reach the heart of Berlin. It remains the ultimate symbol of Soviet sacrifice and resilience in the face of annihilation.',
+    fullContent: 'The Battle of Stalingrad was perhaps the most brutal engagement in military history. What began as a German offensive to capture the strategic oil fields of the Caucasus turned into a desperate, street-by-street struggle for a city named after Hitler\'s rival. For months, soldiers fought for individual rooms in ruined factories and apartment blocks. In November 1942, the Soviets launched Operation Uranus, a massive pincer movement that surrounded the German 6th Army. Despite Hitler\'s orders to fight to the last man, Field Marshal Friedrich Paulus surrendered in February 1943, marking the first time a German Field Marshal had ever been captured.',
+    historicalContext: 'Stalingrad was the psychological and strategic turning point of the entire European war. It destroyed the myth of German military invincibility and provided a massive morale boost to the Allied cause. For the Soviet Union, it was the definitive proof of their national resilience and industrial capability. The loss of over 800,000 Axis troops meant that Germany could never again launch a major, multi-front offensive in the East. From this point forward, the war in Europe became a slow, bloody retreat for the Third Reich.',
     period: 'WWII',
     location: 'Volgograd, Russia',
     coordinates: [48.7080, 44.5133],
@@ -317,7 +335,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'July 1943',
     title: 'The Battle of Kursk',
     shortDescription: 'The largest tank battle in history.',
-    fullContent: 'Operation Citadel was Germany’s last major offensive on the Eastern Front, aimed at cutting off a Soviet salient at Kursk. Forewarned by intelligence, the Soviets constructed a massive, deep defense system of minefields and anti-tank ditches. The resulting clash involved nearly 6,000 tanks and 2 million troops. \n\nThe battle saw the failure of the elite German Panzer divisions to break through. When Hitler was forced to cancel the offensive to deal with the Allied invasion of Sicily, the strategic initiative on the Eastern Front passed permanently to the Soviet Union. Kursk proved that the Red Army had mastered the art of modern, large-scale mechanized warfare. It was the "death ride" of the German armored forces and ensured that Germany could no longer win the war on the ground in the East.',
+    fullContent: 'In July 1943, Germany launched Operation Citadel, a final attempt to regain the initiative on the Eastern Front by cutting off a massive Soviet salient at Kursk. However, the Soviets, alerted by British intelligence and their own reconnaissance, had spent months building the most formidable defensive system in history, consisting of minefields, anti-tank ditches, and deep artillery belts. The resulting clash involved nearly 3,000 German tanks and 5,000 Soviet tanks. The German Panzers were ground down against the deep Soviet defenses, and the Red Army immediately launched massive counter-offensives (Operations Kutuzov and Polkovodets Rumyantsev) that drove the Germans back.',
+    historicalContext: 'Kursk was the last major German offensive in the East. It proved that the Soviet military had fully professionalized and could out-engineer, out-produce, and out-fight the Wehrmacht in a massive mechanized struggle. After Kursk, Germany was forced into a permanent, defensive retreat across a 2,000-mile front. The battle also demonstrated that the qualitative edge of German heavy tanks (like the Tiger and Panther) could be nullified by superior Soviet numbers, deep defense-in-depth, and effective operational command.',
     period: 'WWII',
     location: 'Kursk, Russia',
     coordinates: [51.7373, 36.1874],
@@ -332,12 +351,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'April-May 1945',
     title: 'The Fall of Berlin and V-E Day',
     shortDescription: 'The final collapse of the Third Reich.',
-    fullContent: 'In April 1945, two and a half million Soviet troops launched the final assault on Berlin. The city was defended by a desperate mix of regular army, Hitler Youth, and elderly Volksturm. As the Red Army reached the city center, Adolf Hitler committed suicide in his bunker on April 30. \n\nOn May 2, the Berlin garrison surrendered. A week later, on May 8, Germany signed an unconditional surrender to both the Western Allies and the Soviet Union, marking Victory in Europe (V-E) Day. The fall of Berlin ended the Nazi regime and the war in Europe, but it also saw the city divided into occupation zones, a microcosm of the looming Cold War. The scale of destruction in Berlin symbolized the total ruin of Hitler’s "Thousand-Year Reich" and the catastrophic cost of his pursuit of world domination.',
+    fullContent: 'By April 1945, the Soviet Red Army had reached the outskirts of Berlin. The final battle for the Nazi capital was a desperate struggle through the ruins of the city, involving over 2.5 million Soviet troops. As the Red Banner was raised over the Reichstag, Adolf Hitler committed suicide in his underground bunker on April 30. On May 7, General Alfred Jodl signed the unconditional surrender of all German forces at Reims, followed by a formal ceremony in Berlin on May 8. This day, known as V-E Day (Victory in Europe), saw massive celebrations across the Allied nations, marking the end of the most horrific conflict in European history.',
+    historicalContext: 'The fall of Berlin marked the total destruction of German military power for the second time in 30 years. However, unlike 1918, the occupation that followed was absolute. Germany was divided into four occupation zones, a decision that would lead to the formal division of the country into East and West Germany. The presence of millions of Soviet troops in the heart of Europe established the "Iron Curtain" and served as the physical and political starting point for the Cold War confrontation that would dominate the next half-century.',
     period: 'WWII',
     location: 'Berlin, Germany',
     coordinates: [52.5186, 13.3761],
     sources: [
-      'Beevor, A. (2002). Berlin: The Downfall 1945.',
+      'Beevor, A. (2002). Berlin.',
       'Ryan, C. (1966). The Last Battle.',
       'Fest, J. (2004). Inside Hitler\'s Bunker.'
     ]
@@ -347,13 +367,14 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: 'August-September 1945',
     title: 'The Atomic Bombs and V-J Day',
     shortDescription: 'The end of WWII and the nuclear dawn.',
-    fullContent: 'Following the atomic bombings of Hiroshima and Nagasaki and the Soviet declaration of war, Japan faced "prompt and utter destruction." On August 15, Emperor Hirohito broadcast a recording announcing Japan’s acceptance of the terms of the Potsdam Declaration—the first time the Japanese people had heard their sovereign\'s voice. \n\nThe formal surrender was signed on September 2, 1945, aboard the USS Missouri in Tokyo Bay, marking Victory over Japan (V-J) Day. This officially ended World War II, the deadliest conflict in human history. The use of nuclear weapons not only forced the surrender but fundamentally altered the nature of global power and security. It brought a definitive end to the era of total conventional war between great powers and inaugurated the nuclear age, where the threat of mutual destruction would dominate the geopolitical landscape for decades to come.',
+    fullContent: 'In August 1945, seeking to force a Japanese surrender without a costly invasion of the home islands, the United States dropped two newly-developed atomic bombs on the cities of Hiroshima and Nagasaki. Simultaneously, the Soviet Union declared war on Japan and launched a massive invasion of Japanese-occupied Manchuria. These twin shocks, combined with the personal intervention of Emperor Hirohito, forced the Japanese government to accept the terms of the Potsdam Declaration. On September 2, 1945, the formal surrender was signed aboard the USS Missouri in Tokyo Bay, finally bringing the Second World War to an end.',
+    historicalContext: 'The end of the Pacific War marked the definitive transition of the United States from an isolationist power to a global military and economic hegemon. However, the introduction of nuclear weapons fundamentally and permanently changed the nature of human conflict. The "Nuclear Dawn" created a new world order based on the concept of Mutually Assured Destruction (MAD). The debate over the morality and necessity of using these weapons continues to this day, as they remain the primary factor in preventng direct military conflict between the world\'s Great Powers.',
     period: 'WWII',
     location: 'Tokyo Bay, Japan',
     coordinates: [35.4800, 139.7700],
     sources: [
       'Rhodes, R. (1986). The Making of the Atomic Bomb.',
-      'Frank, R. B. (1999). Downfall: The End of the Imperial Japanese Empire.',
+      'Frank, R. B. (1999). Downfall.',
       'Hasegawa, T. (2005). Racing the Enemy.'
     ]
   },
@@ -364,7 +385,8 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1945-1946',
     title: 'The Nuremberg Trials',
     shortDescription: 'Justice for crimes against humanity.',
-    fullContent: 'The Nuremberg Trials were a series of military tribunals held by the Allied forces to prosecute the prominent members of the political, military, judicial, and economic leadership of Nazi Germany. It was the first time in history that individuals were held legally responsible for state-sponsored atrocities. \n\nThe trials established the concepts of "Crimes Against Peace," "War Crimes," and "Crimes Against Humanity." They proved that "superior orders" was not a valid defense for participating in genocide. The evidence presented—much of it from the Nazis\' own meticulously kept records—documented the full horror of the Holocaust for the world to see. Nuremberg laid the fundamental groundwork for modern international law and the establishment of the International Criminal Court, enshrining the principle that even in war, there are universal legal and moral boundaries that cannot be crossed.',
+    fullContent: 'In the aftermath of the war, the four major Allied powers established the International Military Tribunal in Nuremberg, the birthplace of the Nazi Party. Twenty-four high-ranking Nazi officials were prosecuted for four types of crimes: Conspiracy, Crimes against Peace, War Crimes, and Crimes against Humanity. The trials were a complex legal endeavor that sought to establish a factual record of the Holocaust and other atrocities. Despite criticisms of "victor\'s justice," the trials resulted in twelve death sentences and established the precedent that "following superior orders" was not a valid legal defense for atrocities.',
+    historicalContext: 'Nuremberg was a revolutionary moment in international law. It established the principle of individual criminal responsibility for state-sponsored acts, laying the foundation for the modern International Criminal Court and the UN\'s Universal Declaration of Human Rights. It fundamentally changed the concept of national sovereignty, asserting that there are universal laws of humanity that transcend the orders of a national government. The trials also provided a necessary, though incomplete, process of "denazification" for the German people, forcing a direct confrontation with the crimes of the previous regime.',
     period: 'POST_WWII',
     location: 'Nuremberg, Germany',
     coordinates: [49.4472, 11.0714],
@@ -379,12 +401,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1948',
     title: 'Launch of the Marshall Plan',
     shortDescription: 'Rebuilding Europe to prevent Communism.',
-    fullContent: 'Officially known as the European Recovery Program (ERP), the Marshall Plan provided over $13 billion in economic aid to rebuild Western Europe after WWII. The United States feared that the poverty and social unrest of war-torn nations would provide fertile ground for the spread of Soviet-backed communism. \n\nThe plan was exceptionally successful, fueling the "economic miracles" of West Germany, France, and Italy. It restored industrial production, stabilized currencies, and encouraged international trade. Crucially, it required European nations to cooperate economically, laying the foundations for the eventual formation of the European Union. By integrating West Germany into the Western economic orbit, it also solidified the division of Europe and became a key pillar of the U.S. "Containment" strategy during the early Cold War.',
+    fullContent: 'By 1947, Western Europe was on the brink of economic collapse, a situation the U.S. feared would lead to the spread of Soviet influence. U.S. Secretary of State George Marshall proposed a massive economic recovery program, providing over $13 billion (over $150 billion today) in aid. The program required European nations to cooperate on a joint recovery plan, encouraging the lowering of trade barriers and the modernization of industrial production. While offered to the Soviet Union and its satellites, they rejected the aid as a form of "dollar imperialism," deepening the divide between East and West.',
+    historicalContext: 'The Marshall Plan was one of the most successful foreign policy initiatives in history. It achieved its primary goal of stabilizing Western European democracies and preventing communist takeovers. However, it was also a critical instrument of "Containment"—the U.S. strategy to limit Soviet expansion. By binding the economies of Western Europe to each other and to the United States, it laid the direct institutional foundations for the European Coal and Steel Community, which would eventually evolve into the European Union.',
     period: 'POST_WWII',
     location: 'Paris, France',
     coordinates: [48.8566, 2.3522],
     sources: [
-      'Steil, B. (2018). The Marshall Plan: Dawn of the Cold War.',
+      'Steil, B. (2018). The Marshall Plan.',
       'Hogan, M. J. (1987). The Marshall Plan.',
       'Behrman, G. (2007). The Most Noble Adventure.'
     ]
@@ -394,12 +417,13 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1948-1949',
     title: 'The Berlin Airlift',
     shortDescription: 'The first major confrontation of the Cold War.',
-    fullContent: 'In June 1948, the Soviet Union blocked all road, rail, and water access to West Berlin in an attempt to force the Western Allies out of the city. The Allies responded with Operation Vittles—a massive, year-long airlift that supplied over two million Berliners with food, fuel, and medicine. At the height of the airlift, a plane landed in Berlin every 45 seconds. \n\nThe airlift was a profound logistical triumph and a major propaganda victory for the West. It demonstrated the Allies\' commitment to defending democratic enclaves and transformed the former German enemy into a vital partner. Humiliated, Stalin lifted the blockade in May 1949. The crisis accelerated the formal creation of the Federal Republic of Germany (West Germany) and the formation of NATO, permanently cementing the "Iron Curtain" across the center of Europe.',
+    fullContent: 'In June 1948, in response to the Western Allies\' introduction of a new currency in West Germany, the Soviet Union blocked all ground access to West Berlin. Hoping to starve the city into submission, they cut off food, fuel, and electricity. Instead of retreating or triggering a hot war, the Allies launched "Operation Vittles." For nearly a year, Allied planes landed every few minutes at Tempelhof Airport, delivering over 2.3 million tons of supplies. The airlift was an extraordinary logistical feat and a propaganda victory for the West, as pilots like Gail Halvorsen (the "Candy Bomber") dropped sweets for the children of the besieged city.',
+    historicalContext: 'The Berlin Airlift was the first major "test of will" of the Cold War. It proved that the Western Allies were committed to defending their interests in Europe without resorting to nuclear war. The Soviet failure to break the city led directly to the formation of the Federal Republic of Germany (West Germany) and the creation of NATO. It established the "Containment" policy as the operative strategy for the next four decades and proved that the Cold War would be fought through logistics, technology, and propaganda rather than direct military engagement.',
     period: 'POST_WWII',
     location: 'Tempelhof, Berlin',
     coordinates: [52.4811, 13.3869],
     sources: [
-      'Miller, R. G. (1998). To Save a City: The Berlin Airlift 1948-1949.',
+      'Miller, R. G. (1998). To Save a City.',
       'Tusa, A., & Tusa, J. (1988). The Berlin Blockade.',
       'Giangreco, D. M., & Griffin, R. E. (1988). Airbridge to Berlin.'
     ]
@@ -409,14 +433,15 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1949-1955',
     title: 'The Cold War Divide',
     shortDescription: 'The formation of military blocks.',
-    fullContent: 'In 1949, the North Atlantic Treaty Organization (NATO) was formed as a collective defense pact between the U.S., Canada, and Western European nations. Its core principle, Article 5, stated that an attack on one member was an attack on all. In response to the admission of West Germany into NATO in 1955, the Soviet Union formed the Warsaw Pact with its Eastern European satellite states. \n\nThis formalization of military blocks divided the world into "East" and "West." For the next four decades, Europe would be the primary front line of the Cold War, characterized by massive military buildups, nuclear brinkmanship, and "proxy wars" around the globe. This bipolar world order, born directly from the ashes of WWII, would define global politics until the collapse of the Soviet Union in 1991. The "Long Peace" between the superpowers was maintained not by diplomacy alone, but by the terrifying logic of Mutually Assured Destruction (MAD).',
+    fullContent: 'Seeking to ensure permanent American involvement in European security, twelve Western nations signed the North Atlantic Treaty in 1949, creating NATO. The treaty\'s centerpiece was Article 5, which declared that an attack against one member was an attack against all. In 1955, after West Germany was admitted to NATO, the Soviet Union responded by creating the Warsaw Pact with its Eastern European satellite states. These two military blocks formalized the "Iron Curtain" that Winston Churchill had famously described, creating a permanent state of high-alert readiness that would last for nearly forty years.',
+    historicalContext: 'This division of the world into two hostile, nuclear-armed camps created a remarkably stable—if terrifying—global order. It effectively ended the "German Question" that had caused two world wars by subsuming German power into larger international structures. The legacy of these alliances continues to define global security today; the expansion of NATO and the psychological scar of the Warsaw Pact remain central themes in 21st-century geopolitical tensions in Eastern Europe. The world created between 1949 and 1955 was one where "Total War" was prevented by the constant threat of total annihilation.',
     period: 'POST_WWII',
     location: 'Brussels, Belgium',
     coordinates: [50.8503, 4.3517],
     sources: [
-      'Gaddis, J. L. (2005). The Cold War: A New History.',
+      'Gaddis, J. L. (2005). The Cold War.',
       'NATO Archives',
-      'Mastny, V., & Byrne, M. (2005). A Cardboard Castle?: An Inside History of the Warsaw Pact.'
+      'Mastny, V., & Byrne, M. (2005). A Cardboard Castle?'
     ]
   }
 ];

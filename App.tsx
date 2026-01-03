@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { 
   BookOpen, 
@@ -29,7 +28,8 @@ import {
   Sparkles,
   RefreshCcw,
   Terminal,
-  Minus
+  Minus,
+  Quote
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -444,7 +444,6 @@ const App: React.FC = () => {
               
               {!filterBookmarked && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Minimal Progress Dashboard */}
                   <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-2xl flex items-center gap-4 shadow-sm">
                     <div className="w-10 h-10 rounded-xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-100 flex-shrink-0">
                       <GraduationCap size={20} />
@@ -460,7 +459,6 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Minimal What-If Banner */}
                   <div 
                     onClick={() => setIsLabOpen(true)}
                     className="group relative bg-indigo-600 hover:bg-indigo-700 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-md shadow-indigo-500/10 border border-indigo-500/20"
@@ -479,7 +477,6 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {/* Refined Search Bar Positioning - Now spans 100% of container */}
               <div className="relative group w-full">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                   <Search size={18} className="text-zinc-400 dark:text-zinc-600 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-100 transition-colors" />
@@ -562,7 +559,6 @@ const App: React.FC = () => {
           </div>
         </main>
 
-        {/* Refactored Chatbot UI: Pinned to viewport but with flexible offsets */}
         <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[150] flex flex-col items-end gap-3 pointer-events-none group">
           {isChatOpen && (
             <div className="w-[calc(100vw-3rem)] sm:w-[320px] lg:w-[380px] h-[400px] max-h-[60vh] bg-white/90 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 pointer-events-auto origin-bottom-right">
@@ -637,7 +633,6 @@ const App: React.FC = () => {
           )}
           
           <div className="flex items-center gap-3">
-            {/* Small status indicator when chat is closed */}
             {!isChatOpen && messages.length > 0 && (
               <div className="bg-white dark:bg-zinc-900 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xl text-[9px] font-bold uppercase tracking-widest animate-in fade-in slide-in-from-right-2 pointer-events-auto">
                 Session Active
@@ -818,7 +813,7 @@ const App: React.FC = () => {
               </div>
             </header>
 
-            <div className="px-8 sm:px-12 py-10 space-y-10">
+            <div className="px-8 sm:px-12 py-10 space-y-12">
               <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
                 <div className="space-y-4">
                   <h2 className="text-4xl sm:text-6xl font-bold heading leading-none text-zinc-900 dark:text-zinc-50">{selectedEvent.title}</h2>
@@ -841,6 +836,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   
+                  {/* Fixed property 'id' does not exist on type 'Event' by removing undefined 'event' and using 'selectedEvent' */}
                   <button 
                     onClick={() => toggleReadStatus(selectedEvent.id)} 
                     className={`flex items-center gap-3 h-16 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-[0.2em] flex-shrink-0 transition-all ${readEvents.has(selectedEvent.id) ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-900 dark:border-zinc-100 shadow-md' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600'}`}
@@ -853,6 +849,26 @@ const App: React.FC = () => {
 
               <div className="prose prose-zinc lg:prose-xl dark:prose-invert max-w-none border-l-4 border-zinc-900 dark:border-zinc-100 pl-8 py-2">
                 <p className="leading-relaxed text-zinc-800 dark:text-zinc-200 font-medium">{selectedEvent.fullContent}</p>
+              </div>
+
+              {/* Historical Context Section */}
+              <div className="p-8 sm:p-10 rounded-[2.5rem] bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/50 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-10 dark:opacity-5 text-zinc-900 dark:text-zinc-100">
+                  <Quote size={120} />
+                </div>
+                <div className="relative z-10 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center">
+                      <History size={16} />
+                    </div>
+                    <h4 className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-zinc-900 dark:text-zinc-50">STRATEGIC CONTEXT & LEGACY</h4>
+                  </div>
+                  <div className="prose prose-zinc dark:prose-invert max-w-none">
+                    <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed font-serif italic text-lg lg:text-xl">
+                      {selectedEvent.historicalContext}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {selectedEvent.coordinates && (
