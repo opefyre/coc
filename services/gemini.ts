@@ -2,7 +2,6 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const getHistorianChat = () => {
-  // Always initialize with process.env.API_KEY directly inside the function
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   return ai.chats.create({
     model: 'gemini-3-flash-preview',
@@ -44,4 +43,29 @@ export const simulateAlternativeTimeline = async (context: string, question: str
     Maintain an objective, scholarly tone grounded in historical causality and strategic realism. Avoid science fiction tropes; focus on diplomatic and industrial shifts.`,
   });
   return response.text;
+};
+
+export const generateHistoricalImage = async (eventTitle: string, description: string) => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const prompt = `A professional, archival-grade historical photograph of "${eventTitle}". 
+  Subject matter: ${description}. 
+  Style: Early-to-mid 20th century documentary photography, monochrome or heavy sepia tone, authentic silver-halide film grain, slight vignetting, high contrast, cinematic historical realism. 
+  NO MODERN ELEMENTS. NO TEXT. LOOKS LIKE A GENUINE ARTIFACT.`;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash-image',
+    contents: [{ parts: [{ text: prompt }] }],
+    config: {
+      imageConfig: {
+        aspectRatio: "16:9",
+      }
+    }
+  });
+
+  for (const part of response.candidates[0].content.parts) {
+    if (part.inlineData) {
+      return `data:image/png;base64,${part.inlineData.data}`;
+    }
+  }
+  return null;
 };

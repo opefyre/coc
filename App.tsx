@@ -31,14 +31,16 @@ import {
   Terminal,
   Minus,
   Quote,
-  BookOpen
+  BookOpen,
+  Image as ImageIcon,
+  Wand2
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import * as L from 'leaflet';
 import { HISTORY_EVENTS, DECISION_POINTS } from './data/historyData';
 import { WarPeriod, TimelineEvent, ChatMessage, User, DecisionPoint } from './types';
-import { getHistorianChat, simulateAlternativeTimeline } from './services/gemini';
+import { getHistorianChat, simulateAlternativeTimeline, generateHistoricalImage } from './services/gemini';
 import { generateNarration } from './services/tts';
 import { decodeBase64, decodeAudioData } from './utils/audio';
 import { GenerateContentResponse } from "@google/genai";
@@ -60,6 +62,10 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
   
+  // Local cache for generated images to avoid re-generating on every view
+  const [generatedImages, setGeneratedImages] = useState<Record<string, string>>({});
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+
   // What-If Laboratory State
   const [isLabOpen, setIsLabOpen] = useState(false);
   const [customWhatIf, setCustomWhatIf] = useState('');
@@ -332,6 +338,21 @@ const App: React.FC = () => {
     }
   };
 
+  const handleReconstructImage = async () => {
+    if (!selectedEvent || isGeneratingImage) return;
+    setIsGeneratingImage(true);
+    try {
+      const imageData = await generateHistoricalImage(selectedEvent.title, selectedEvent.shortDescription);
+      if (imageData) {
+        setGeneratedImages(prev => ({ ...prev, [selectedEvent.id]: imageData }));
+      }
+    } catch (error) {
+      console.error("Image gen error:", error);
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
+
   const sendMessage = async () => {
     if (!input.trim() || isLoadingChat) return;
     const userMessage: ChatMessage = { role: 'user', content: input };
@@ -537,30 +558,49 @@ const App: React.FC = () => {
                       <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800"></div>
                     </div>
                     <div className="grid grid-cols-1 gap-8">
-                      {eventsInPeriod.map((event) => (
-                        <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
-                          <div className="w-32 flex-shrink-0">
-                            <span className="text-xl font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
-                              {event.year}
-                            </span>
-                          </div>
-                          <div className="flex-1">
-                            <h4 className="text-2xl font-bold mb-3 heading text-zinc-900 dark:text-zinc-50">{event.title}</h4>
-                            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">{event.shortDescription}</p>
-                            <div className="mt-6 flex items-center justify-between">
-                              <div className="flex items-center text-xs font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-all">
-                                Examine Records <ChevronRight size={14} className="ml-1 group-hover:translate-x-2 transition-transform" />
-                              </div>
-                              {event.location && (
-                                <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest flex items-center gap-1.5">
-                                  <MapIcon size={12} />
-                                  {event.location}
+                      {eventsInPeriod.map((event) => {
+                        const displayImage = generatedImages[event.id] || event.image;
+                        return (
+                          <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all overflow-hidden ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
+                            <div className="w-full md:w-48 h-48 flex-shrink-0 relative overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-700/50">
+                              {displayImage ? (
+                                <img 
+                                  src={displayImage} 
+                                  alt={event.title} 
+                                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-out"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-zinc-300 dark:text-zinc-600">
+                                  <ImageIcon size={32} />
                                 </div>
                               )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/40 to-transparent pointer-events-none"></div>
+                              <div className="absolute bottom-3 left-3 px-2 py-1 bg-white/10 backdrop-blur-md rounded text-[10px] font-bold text-white border border-white/20">
+                                {event.year}
+                              </div>
+                            </div>
+                            
+                            <div className="flex-1 flex flex-col py-2">
+                              <div className="flex-1">
+                                <h4 className="text-2xl font-bold mb-3 heading text-zinc-900 dark:text-zinc-50 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">{event.title}</h4>
+                                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium text-sm line-clamp-3">{event.shortDescription}</p>
+                              </div>
+                              
+                              <div className="mt-6 flex items-center justify-between">
+                                <div className="flex items-center text-xs font-bold text-zinc-400 dark:text-zinc-50 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-all">
+                                  Open Archives <ChevronRight size={14} className="ml-1 group-hover:translate-x-2 transition-transform" />
+                                </div>
+                                {event.location && (
+                                  <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest flex items-center gap-1.5 bg-zinc-100/50 dark:bg-zinc-800/50 px-2 py-1 rounded">
+                                    <MapIcon size={12} />
+                                    {event.location}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </section>
                 );
@@ -804,13 +844,21 @@ const App: React.FC = () => {
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-md" onClick={() => setSelectedEvent(null)} />
           <div className="relative bg-white dark:bg-zinc-900 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300 border border-zinc-200 dark:border-zinc-800">
-            <header className="sticky top-0 z-20 bg-white/95 dark:bg-zinc-900/95 border-b border-zinc-100 dark:border-zinc-800 px-8 py-5 flex items-center justify-between">
+            <header className="sticky top-0 z-30 bg-white/95 dark:bg-zinc-900/95 border-b border-zinc-100 dark:border-zinc-800 px-8 py-5 flex items-center justify-between">
               <div className="flex items-center space-x-3 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.3em]">
                 <span>{selectedEvent.period.replace('_', ' ')}</span>
                 <span className="w-1 h-1 bg-zinc-200 dark:bg-zinc-700 rounded-full" />
                 <span>RECORD {selectedEvent.year}</span>
               </div>
               <div className="flex items-center gap-2">
+                <button 
+                  onClick={handleReconstructImage}
+                  disabled={isGeneratingImage}
+                  className={`p-2 transition-all ${isGeneratingImage ? 'text-indigo-500 animate-pulse' : 'text-zinc-400 hover:text-indigo-500'}`}
+                  title="Reconstruct Visual Record via Gemini"
+                >
+                  <Wand2 size={18} />
+                </button>
                 <button onClick={(e) => handleShare(selectedEvent, e)} className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                   {shareFeedback === selectedEvent.id ? (
                     <span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100">LINK COPIED</span>
@@ -823,10 +871,33 @@ const App: React.FC = () => {
               </div>
             </header>
 
+            <div className="relative h-64 sm:h-96 w-full group">
+              {isGeneratingImage && (
+                <div className="absolute inset-0 z-10 bg-zinc-950/60 backdrop-blur-sm flex flex-col items-center justify-center text-white space-y-4">
+                  <Loader2 size={32} className="animate-spin" />
+                  <span className="text-xs font-bold uppercase tracking-widest">Reconstructing Archival Image...</span>
+                </div>
+              )}
+              {generatedImages[selectedEvent.id] || selectedEvent.image ? (
+                <img 
+                  src={generatedImages[selectedEvent.id] || selectedEvent.image} 
+                  alt={selectedEvent.title} 
+                  className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
+                />
+              ) : (
+                <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                  <ImageIcon size={48} className="text-zinc-300" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-zinc-900 via-transparent to-transparent"></div>
+              <div className="absolute bottom-0 left-0 p-8 sm:p-12 w-full">
+                <h2 className="text-4xl sm:text-6xl font-bold heading leading-none text-zinc-900 dark:text-zinc-50">{selectedEvent.title}</h2>
+              </div>
+            </div>
+
             <div className="px-8 sm:px-12 py-10 space-y-12">
               <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
                 <div className="space-y-4">
-                  <h2 className="text-4xl sm:text-6xl font-bold heading leading-none text-zinc-900 dark:text-zinc-50">{selectedEvent.title}</h2>
                   <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 font-medium"><History size={14} /> <span>Primary Theater: {selectedEvent.location}</span></div>
                 </div>
 
