@@ -23,7 +23,9 @@ import {
   FlaskConical,
   Zap,
   ShieldAlert,
-  ArrowRight
+  ArrowRight,
+  Search,
+  FilterX
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -49,6 +51,7 @@ const App: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoadingChat, setIsLoadingChat] = useState(false);
   const [filterBookmarked, setFilterBookmarked] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
   
   // What-If Laboratory State
@@ -140,9 +143,21 @@ const App: React.FC = () => {
   }, [readEvents]);
 
   const visibleEvents = useMemo(() => {
-    if (!filterBookmarked) return HISTORY_EVENTS;
-    return HISTORY_EVENTS.filter(e => bookmarks.has(e.id));
-  }, [filterBookmarked, bookmarks]);
+    let filtered = filterBookmarked 
+      ? HISTORY_EVENTS.filter(e => bookmarks.has(e.id)) 
+      : HISTORY_EVENTS;
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(e => 
+        e.title.toLowerCase().includes(q) ||
+        e.year.toLowerCase().includes(q) ||
+        (e.location && e.location.toLowerCase().includes(q)) ||
+        e.shortDescription.toLowerCase().includes(q)
+      );
+    }
+    return filtered;
+  }, [filterBookmarked, bookmarks, searchQuery]);
 
   useEffect(() => {
     if (selectedEvent) {
@@ -414,82 +429,126 @@ const App: React.FC = () => {
       <div className="flex-1 relative overflow-hidden flex flex-col">
         <main ref={mainScrollRef} className={`flex-1 overflow-y-auto relative scroll-smooth pb-32 transition-all duration-500 ${isChatOpen || selectedEvent || isLabOpen ? 'pointer-events-none opacity-30 blur-sm' : 'opacity-100'}`}>
           <div className="max-w-5xl mx-auto px-8 py-16">
-            <div className="mb-24 space-y-12">
+            <div className="mb-12 space-y-12">
               <h1 className="text-6xl md:text-8xl font-bold heading leading-none tracking-tighter text-zinc-900 dark:text-zinc-50">{filterBookmarked ? "Personal Archives." : "The History of Total War."}</h1>
+              
               {!filterBookmarked && (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-8 rounded-3xl shadow-sm flex items-center gap-10">
-                    <div className="w-20 h-20 rounded-2xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-100"><GraduationCap size={40} /></div>
-                    <div className="flex-1 space-y-4">
-                      <div className="flex justify-between items-baseline">
-                        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Archival Progress</h3>
-                        <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">{progressStats.completed} / {progressStats.total}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Minimal Progress Dashboard */}
+                  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-2xl flex items-center gap-4 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-100 flex-shrink-0">
+                      <GraduationCap size={20} />
+                    </div>
+                    <div className="flex-1 space-y-1.5">
+                      <div className="flex justify-between items-center text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+                        <span>Records examined</span>
+                        <span>{progressStats.completed} / {progressStats.total}</span>
                       </div>
-                      <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                         <div className="h-full bg-zinc-900 dark:bg-zinc-100 transition-all duration-1000" style={{ width: `${progressStats.percentage}%` }} />
                       </div>
                     </div>
                   </div>
                   
-                  {/* New What-If Discovery Banner */}
+                  {/* Minimal What-If Banner */}
                   <div 
                     onClick={() => setIsLabOpen(true)}
-                    className="group relative overflow-hidden bg-gradient-to-br from-indigo-600 to-indigo-800 p-6 sm:p-8 rounded-3xl cursor-pointer shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all border border-indigo-400/20"
+                    className="group relative bg-indigo-600 hover:bg-indigo-700 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-md shadow-indigo-500/10 border border-indigo-500/20"
                   >
-                    <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-                      <FlaskConical size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-indigo-200 text-[10px] font-bold tracking-[0.2em] uppercase">
-                          <Zap size={14} className="fill-indigo-300 text-indigo-300" />
-                          NEW EXPERIMENTAL MODULE
-                        </div>
-                        <h3 className="text-2xl sm:text-3xl font-bold text-white heading">What-If Laboratory</h3>
-                        <p className="text-indigo-100/70 text-sm max-w-md font-medium">Simulate alternative historical outcomes using our archival AI engine. Explore how single decisions could have reshaped the world.</p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white flex-shrink-0">
+                        <FlaskConical size={20} />
                       </div>
-                      <div className="flex-shrink-0">
-                        <div className="h-14 px-8 rounded-2xl bg-white text-indigo-900 flex items-center gap-3 font-bold text-sm shadow-lg group-hover:gap-5 transition-all">
-                          Enter Laboratory <ArrowRight size={18} />
-                        </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-white">Simulation Lab</span>
+                        <span className="text-[10px] text-indigo-100/60 font-bold uppercase tracking-wider">Explore what-if scenarios</span>
                       </div>
                     </div>
+                    <ArrowRight size={18} className="text-white group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               )}
+
+              {/* Refined Search Bar Positioning - Now spans 100% of container */}
+              <div className="relative group w-full">
+                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                  <Search size={18} className="text-zinc-400 dark:text-zinc-600 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-100 transition-colors" />
+                </div>
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Filter by keywords, years, or theater..." 
+                  className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 h-12 pl-12 pr-6 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-white/5 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-600 shadow-sm"
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute inset-y-0 right-3 flex items-center text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
             </div>
 
-            {periods.map((period, pIdx) => {
-              const eventsInPeriod = visibleEvents.filter(e => e.period === period.key);
-              if (eventsInPeriod.length === 0) return null;
-              return (
-                <section key={period.key} id={period.key} className="mb-24 pt-8">
-                  <div className="flex items-center space-x-6 mb-12">
-                    <span className="text-lg font-bold text-zinc-300 dark:text-zinc-700">0{pIdx + 1}</span>
-                    <h3 className="text-xl font-bold heading leading-none text-zinc-900 dark:text-zinc-50">{period.label}</h3>
-                    <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800"></div>
-                  </div>
-                  <div className="grid grid-cols-1 gap-8">
-                    {eventsInPeriod.map((event) => (
-                      <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
-                        <div className="w-32 flex-shrink-0">
-                          <span className="text-xl font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
-                            {event.year}
-                          </span>
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-2xl font-bold mb-3 heading text-zinc-900 dark:text-zinc-50">{event.title}</h4>
-                          <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">{event.shortDescription}</p>
-                          <div className="mt-6 flex items-center text-xs font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-all">
-                            Examine Records <ChevronRight size={14} className="ml-1 group-hover:translate-x-2 transition-transform" />
+            {visibleEvents.length === 0 ? (
+              <div className="py-24 flex flex-col items-center justify-center text-center space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="w-20 h-20 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
+                  <FilterX size={32} />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">No Matching Records</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-xs">No entries match your current search criteria in the archives.</p>
+                </div>
+                <button 
+                  onClick={() => { setSearchQuery(''); setFilterBookmarked(false); }}
+                  className="px-6 py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-bold text-sm rounded-xl shadow-lg transition-transform active:scale-95"
+                >
+                  Clear Search Filters
+                </button>
+              </div>
+            ) : (
+              periods.map((period, pIdx) => {
+                const eventsInPeriod = visibleEvents.filter(e => e.period === period.key);
+                if (eventsInPeriod.length === 0) return null;
+                return (
+                  <section key={period.key} id={period.key} className="mb-24 pt-8">
+                    <div className="flex items-center space-x-6 mb-12">
+                      <span className="text-lg font-bold text-zinc-300 dark:text-zinc-700">0{pIdx + 1}</span>
+                      <h3 className="text-xl font-bold heading leading-none text-zinc-900 dark:text-zinc-50">{period.label}</h3>
+                      <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800"></div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-8">
+                      {eventsInPeriod.map((event) => (
+                        <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
+                          <div className="w-32 flex-shrink-0">
+                            <span className="text-xl font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+                              {event.year}
+                            </span>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-2xl font-bold mb-3 heading text-zinc-900 dark:text-zinc-50">{event.title}</h4>
+                            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">{event.shortDescription}</p>
+                            <div className="mt-6 flex items-center justify-between">
+                              <div className="flex items-center text-xs font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-all">
+                                Examine Records <ChevronRight size={14} className="ml-1 group-hover:translate-x-2 transition-transform" />
+                              </div>
+                              {event.location && (
+                                <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest flex items-center gap-1.5">
+                                  <MapIcon size={12} />
+                                  {event.location}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+                      ))}
+                    </div>
+                  </section>
+                );
+              })
+            )}
           </div>
         </main>
 
