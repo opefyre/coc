@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { 
-  BookOpen, 
+  Compass, 
   MessageSquare, 
   History, 
   Moon, 
@@ -29,7 +30,8 @@ import {
   RefreshCcw,
   Terminal,
   Minus,
-  Quote
+  Quote,
+  BookOpen
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -408,10 +410,18 @@ const App: React.FC = () => {
     <div className={`h-screen flex flex-col overflow-hidden bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300`}>
       <header className="flex-shrink-0 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
         <div className="flex items-center gap-8">
-          <h2 className="text-lg font-bold heading flex items-center gap-2 text-zinc-900 dark:text-zinc-50 cursor-pointer" onClick={() => mainScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <BookOpen size={20} className="text-zinc-900 dark:text-zinc-100" />
-            <span className="hidden sm:inline">Chronicles</span>
-          </h2>
+          <div 
+            className="flex items-center gap-4 cursor-pointer group" 
+            onClick={() => mainScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 shadow-lg shadow-zinc-900/10 dark:shadow-white/5 group-hover:scale-110 transition-transform duration-300">
+              <Compass size={22} className="group-hover:rotate-45 transition-transform duration-500" />
+              <div className="absolute inset-0 rounded-full border border-zinc-900/20 dark:border-white/20 animate-ping group-hover:animate-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h2 className="text-xl font-black heading tracking-[0.1em] text-zinc-900 dark:text-zinc-50 uppercase">
+              Chronicles
+            </h2>
+          </div>
           <nav className="hidden lg:flex items-center space-x-1">
             {periods.map((p) => (
               <button key={p.key} onClick={() => document.getElementById(p.key)?.scrollIntoView({ behavior: 'smooth' })} className="px-3 py-1.5 text-xs font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-lg transition-all">{p.label}</button>
@@ -528,7 +538,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 gap-8">
                       {eventsInPeriod.map((event) => (
-                        <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
+                        <div key={event.id} onClick={() => setSelectedEvent(event)} className={`group relative flex flex-col md:flex-row gap-8 cursor-pointer p-8 rounded-2xl border transition-all ${readEvents.has(event.id) ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-xl'}`}>
                           <div className="w-32 flex-shrink-0">
                             <span className="text-xl font-bold text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
                               {event.year}
@@ -836,7 +846,6 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Fixed property 'id' does not exist on type 'Event' by removing undefined 'event' and using 'selectedEvent' */}
                   <button 
                     onClick={() => toggleReadStatus(selectedEvent.id)} 
                     className={`flex items-center gap-3 h-16 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-[0.2em] flex-shrink-0 transition-all ${readEvents.has(selectedEvent.id) ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-900 dark:border-zinc-100 shadow-md' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600'}`}
@@ -898,12 +907,8 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <footer className="flex-shrink-0 py-10 px-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white dark:bg-zinc-950 gap-4 relative z-[100]">
+      <footer className="flex-shrink-0 py-10 px-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-center text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white dark:bg-zinc-950 gap-4 relative z-[100]">
         <p>© 2024 CHRONICLES OF CONFLICT • SCHOLARLY DIGITAL EDITION</p>
-        <div className="flex space-x-8">
-          <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">ARCHIVAL METHODS</a>
-          <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">PRIMARY SOURCES</a>
-        </div>
       </footer>
     </div>
   );
