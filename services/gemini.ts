@@ -20,3 +20,22 @@ export const getHistorianChat = () => {
     },
   });
 };
+
+export const simulateAlternativeTimeline = async (context: string, question: string) => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: `As a scholarly historian, provide an analysis of this alternative historical scenario:
+    
+    CONTEXT: ${context}
+    WHAT IF: ${question}
+    
+    Structure your response as follows:
+    1. Immediate Geopolitical Shifts
+    2. Long-term Impact on the War's Outcome
+    3. The Resulting Post-War Reality
+    
+    Keep the tone objective and grounded in historical causality.`,
+  });
+  return response.text;
+};

@@ -19,14 +19,18 @@ import {
   Circle,
   GraduationCap,
   Bookmark,
-  Share2
+  Share2,
+  FlaskConical,
+  Zap,
+  ShieldAlert,
+  ArrowRight
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import * as L from 'leaflet';
-import { HISTORY_EVENTS } from './data/historyData';
-import { WarPeriod, TimelineEvent, ChatMessage, User } from './types';
-import { getHistorianChat } from './services/gemini';
+import { HISTORY_EVENTS, DECISION_POINTS } from './data/historyData';
+import { WarPeriod, TimelineEvent, ChatMessage, User, DecisionPoint } from './types';
+import { getHistorianChat, simulateAlternativeTimeline } from './services/gemini';
 import { generateNarration } from './services/tts';
 import { decodeBase64, decodeAudioData } from './utils/audio';
 import { GenerateContentResponse } from "@google/genai";
@@ -47,6 +51,12 @@ const App: React.FC = () => {
   const [filterBookmarked, setFilterBookmarked] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
   
+  // What-If Laboratory State
+  const [isLabOpen, setIsLabOpen] = useState(false);
+  const [selectedWhatIf, setSelectedWhatIf] = useState<DecisionPoint | null>(null);
+  const [simulationResult, setSimulationResult] = useState<string | null>(null);
+  const [isSimulating, setIsSimulating] = useState(false);
+
   const [readEvents, setReadEvents] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('chronicles_read_records');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -324,6 +334,21 @@ const App: React.FC = () => {
     } finally { setIsLoadingChat(false); }
   };
 
+  const handleSimulateWhatIf = async (point: DecisionPoint) => {
+    setSelectedWhatIf(point);
+    setIsSimulating(true);
+    setSimulationResult(null);
+    try {
+      const result = await simulateAlternativeTimeline(point.eventContext, point.whatIfQuestion);
+      setSimulationResult(result || "Unable to compute simulation. Data corrupted.");
+    } catch (error) {
+      console.error("Simulation error:", error);
+      setSimulationResult("Simulation failed due to archive instability.");
+    } finally {
+      setIsSimulating(false);
+    }
+  };
+
   const formatTime = (seconds: number) => {
     if (isNaN(seconds) || seconds < 0) return "0:00";
     const mins = Math.floor(seconds / 60);
@@ -369,6 +394,13 @@ const App: React.FC = () => {
           </nav>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
+          <button 
+            onClick={() => setIsLabOpen(true)}
+            className="flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold border border-indigo-100 dark:border-indigo-900/50 hover:scale-105 transition-all shadow-sm"
+          >
+            <FlaskConical size={16} />
+            <span className="hidden sm:inline">What-If Lab</span>
+          </button>
           <button onClick={() => setFilterBookmarked(!filterBookmarked)} className={`p-2 rounded-xl transition-all ${filterBookmarked ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950' : 'text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`} title="Toggle Bookmarks">
             <Bookmark size={18} fill={filterBookmarked ? "currentColor" : "none"} />
           </button>
@@ -380,20 +412,47 @@ const App: React.FC = () => {
       </header>
 
       <div className="flex-1 relative overflow-hidden flex flex-col">
-        <main ref={mainScrollRef} className={`flex-1 overflow-y-auto relative scroll-smooth pb-32 transition-all duration-500 ${isChatOpen || selectedEvent ? 'pointer-events-none opacity-30 blur-sm' : 'opacity-100'}`}>
+        <main ref={mainScrollRef} className={`flex-1 overflow-y-auto relative scroll-smooth pb-32 transition-all duration-500 ${isChatOpen || selectedEvent || isLabOpen ? 'pointer-events-none opacity-30 blur-sm' : 'opacity-100'}`}>
           <div className="max-w-5xl mx-auto px-8 py-16">
             <div className="mb-24 space-y-12">
               <h1 className="text-6xl md:text-8xl font-bold heading leading-none tracking-tighter text-zinc-900 dark:text-zinc-50">{filterBookmarked ? "Personal Archives." : "The History of Total War."}</h1>
               {!filterBookmarked && (
-                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-8 rounded-3xl shadow-sm flex items-center gap-10">
-                  <div className="w-20 h-20 rounded-2xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-100"><GraduationCap size={40} /></div>
-                  <div className="flex-1 space-y-4">
-                    <div className="flex justify-between items-baseline">
-                      <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Archival Progress</h3>
-                      <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">{progressStats.completed} / {progressStats.total}</span>
+                <div className="space-y-6">
+                  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-8 rounded-3xl shadow-sm flex items-center gap-10">
+                    <div className="w-20 h-20 rounded-2xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-100"><GraduationCap size={40} /></div>
+                    <div className="flex-1 space-y-4">
+                      <div className="flex justify-between items-baseline">
+                        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Archival Progress</h3>
+                        <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">{progressStats.completed} / {progressStats.total}</span>
+                      </div>
+                      <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-zinc-900 dark:bg-zinc-100 transition-all duration-1000" style={{ width: `${progressStats.percentage}%` }} />
+                      </div>
                     </div>
-                    <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-zinc-900 dark:bg-zinc-100 transition-all duration-1000" style={{ width: `${progressStats.percentage}%` }} />
+                  </div>
+                  
+                  {/* New What-If Discovery Banner */}
+                  <div 
+                    onClick={() => setIsLabOpen(true)}
+                    className="group relative overflow-hidden bg-gradient-to-br from-indigo-600 to-indigo-800 p-6 sm:p-8 rounded-3xl cursor-pointer shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all border border-indigo-400/20"
+                  >
+                    <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+                      <FlaskConical size={120} />
+                    </div>
+                    <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-indigo-200 text-[10px] font-bold tracking-[0.2em] uppercase">
+                          <Zap size={14} className="fill-indigo-300 text-indigo-300" />
+                          NEW EXPERIMENTAL MODULE
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white heading">What-If Laboratory</h3>
+                        <p className="text-indigo-100/70 text-sm max-w-md font-medium">Simulate alternative historical outcomes using our archival AI engine. Explore how single decisions could have reshaped the world.</p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <div className="h-14 px-8 rounded-2xl bg-white text-indigo-900 flex items-center gap-3 font-bold text-sm shadow-lg group-hover:gap-5 transition-all">
+                          Enter Laboratory <ArrowRight size={18} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -467,6 +526,100 @@ const App: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {isLabOpen && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md" onClick={() => setIsLabOpen(false)} />
+          <div className="relative bg-white dark:bg-zinc-900 w-full max-w-5xl h-[90vh] overflow-hidden rounded-3xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-800 animate-in zoom-in-95 duration-300">
+            <header className="px-8 py-6 border-b dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <FlaskConical size={24} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold heading text-zinc-900 dark:text-zinc-50">Decision Laboratory</h2>
+                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Alternative Timeline Simulation Engine</p>
+                </div>
+              </div>
+              <button onClick={() => setIsLabOpen(false)} className="p-3 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full text-zinc-500 transition-colors">
+                <X size={24} />
+              </button>
+            </header>
+            
+            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+              <aside className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 overflow-x-auto lg:overflow-y-auto p-6 flex lg:flex-col gap-4">
+                <h4 className="hidden lg:block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-6">CRITICAL TURNING POINTS</h4>
+                {DECISION_POINTS.map((point) => (
+                  <button 
+                    key={point.id} 
+                    onClick={() => handleSimulateWhatIf(point)}
+                    className={`flex-shrink-0 w-64 lg:w-full text-left p-4 rounded-2xl border transition-all ${selectedWhatIf?.id === point.id ? 'bg-indigo-500 border-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-indigo-400 text-zinc-700 dark:text-zinc-300'}`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap size={14} className={selectedWhatIf?.id === point.id ? 'text-white' : 'text-indigo-500'} />
+                      <span className="text-sm font-bold truncate">{point.title}</span>
+                    </div>
+                    <p className={`text-[11px] leading-tight line-clamp-2 ${selectedWhatIf?.id === point.id ? 'text-indigo-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
+                      {point.eventContext}
+                    </p>
+                  </button>
+                ))}
+              </aside>
+              
+              <main className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-6 lg:p-10 relative">
+                {!selectedWhatIf ? (
+                  <div className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-6">
+                    <div className="w-20 h-20 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
+                      <ShieldAlert size={40} />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Initialize Simulation</h3>
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400">Select a historical turning point from the archives to begin alternative timeline analysis.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="max-w-3xl mx-auto space-y-12 pb-10">
+                    <div className="space-y-6">
+                      <div className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
+                        SCENARIO LOADED
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold heading text-zinc-900 dark:text-zinc-50">{selectedWhatIf.whatIfQuestion}</h3>
+                      <div className="h-px w-full bg-gradient-to-r from-indigo-500 to-transparent"></div>
+                    </div>
+
+                    {isSimulating ? (
+                      <div className="flex flex-col items-center justify-center py-20 space-y-6">
+                        <Loader2 size={40} className="animate-spin text-indigo-500" />
+                        <div className="text-center">
+                          <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Simulating Alternative Geopolitics...</p>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400">Archival AI calculating causality shifts across time-streams.</p>
+                        </div>
+                      </div>
+                    ) : simulationResult ? (
+                      <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
+                        <div className="prose prose-zinc lg:prose-xl dark:prose-invert max-w-none">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{simulationResult}</ReactMarkdown>
+                        </div>
+                        <div className="mt-16 p-6 rounded-3xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 flex flex-col sm:flex-row gap-6">
+                          <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0">
+                            <ShieldAlert size={24} />
+                          </div>
+                          <div className="space-y-2">
+                            <h5 className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase tracking-widest">HISTORIAN'S NOTE</h5>
+                            <p className="text-sm text-amber-700/80 dark:text-amber-500/80 leading-relaxed italic">
+                              This simulation is based on theoretical historical extrapolation. Small changes in chaotic systems can lead to wildly different outcomes than those predicted here.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </main>
+            </div>
+          </div>
+        </div>
+      )}
 
       {selectedEvent && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">

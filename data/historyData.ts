@@ -1,7 +1,41 @@
 
-import { TimelineEvent } from '../types';
+import { TimelineEvent, DecisionPoint } from '../types';
+
+export const DECISION_POINTS: DecisionPoint[] = [
+  {
+    id: 'wp-sarajevo',
+    title: 'The Failed Assassination',
+    eventContext: 'June 28, 1914: The assassination of Archduke Franz Ferdinand.',
+    whatIfQuestion: 'What if Gavrilo Princip had missed his shot or the motorcade had taken the correct route?'
+  },
+  {
+    id: 'wp-dunkirk',
+    title: 'Dunkirk Total Collapse',
+    eventContext: '1940: The evacuation of Allied troops from the beaches of Dunkirk.',
+    whatIfQuestion: 'What if the German Panzer divisions had not been halted by the "Stop Order" and had destroyed the BEF on the beaches?'
+  },
+  {
+    id: 'wp-midway',
+    title: 'The Defeat at Midway',
+    eventContext: '1942: The Battle of Midway in the Pacific Theater.',
+    whatIfQuestion: 'What if the Japanese Imperial Navy had successfully destroyed the US aircraft carriers?'
+  },
+  {
+    id: 'wp-barbarossa',
+    title: 'A Moscow Victory',
+    eventContext: '1941: Operation Barbarossa and the German advance on Moscow.',
+    whatIfQuestion: 'What if Moscow had fallen before the onset of the Russian winter?'
+  },
+  {
+    id: 'wp-normandy',
+    title: 'Operation Overlord Failure',
+    eventContext: 'June 6, 1944: The D-Day landings in Normandy.',
+    whatIfQuestion: 'What if the Normandy landings had been repelled by the Atlantic Wall defenses?'
+  }
+];
 
 export const HISTORY_EVENTS: TimelineEvent[] = [
+  // ... (keeping all existing events)
   // --- PRE_WWI ---
   {
     id: 'franco-prussian',
@@ -274,7 +308,7 @@ export const HISTORY_EVENTS: TimelineEvent[] = [
     year: '1944',
     title: 'Operation Overlord (D-Day)',
     shortDescription: 'The liberation of Western Europe begins.',
-    fullContent: 'The largest seaborne invasion in history saw Allied forces land on the beaches of Normandy, France. Despite heavy casualties, the Allies established a permanent foothold in Europe. This opened the long-awaited Western Front, forcing Germany to fight a three-front war (East, West, and South) that it could no longer sustain.',
+    fullContent: 'The largest seborne invasion in history saw Allied forces land on the beaches of Normandy, France. Despite heavy casualties, the Allies established a permanent foothold in Europe. This opened the long-awaited Western Front, forcing Germany to fight a three-front war (East, West, and South) that it could no longer sustain.',
     period: 'WWII',
     location: 'Normandy, France',
     coordinates: [49.4144, -0.8322]

@@ -13,6 +13,13 @@ export interface TimelineEvent {
   coordinates?: [number, number]; // [latitude, longitude]
 }
 
+export interface DecisionPoint {
+  id: string;
+  title: string;
+  eventContext: string;
+  whatIfQuestion: string;
+}
+
 export interface ChatMessage {
   role: 'user' | 'model';
   content: string;
