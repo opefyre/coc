@@ -11,6 +11,7 @@ export interface TimelineEvent {
   location?: string;
   image?: string;
   coordinates?: [number, number]; // [latitude, longitude]
+  sources?: string[];
 }
 
 export interface DecisionPoint {

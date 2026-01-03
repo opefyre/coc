@@ -711,22 +711,28 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-4 bg-zinc-100 dark:bg-zinc-800/50 p-3 pr-6 rounded-2xl min-w-[320px] border border-zinc-200 dark:border-zinc-700/50">
-                    <button onClick={handleNarrate} disabled={isAudioLoading} className="w-12 h-12 bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 rounded-full flex items-center justify-center hover:scale-105 transition-all flex-shrink-0 shadow-lg">
-                      {isAudioLoading ? <Loader2 size={18} className="animate-spin" /> : isNarrating ? <Pause size={20} fill="currentColor" /> : <Play size={20} className="ml-1" fill="currentColor" />}
+                  {/* Unified Height Containers for Narration and Examination */}
+                  <div className="flex items-center gap-4 bg-zinc-100 dark:bg-zinc-800/50 p-3 pr-6 rounded-2xl min-w-[320px] h-16 border border-zinc-200 dark:border-zinc-700/50 transition-colors">
+                    <button onClick={handleNarrate} disabled={isAudioLoading} className="w-10 h-10 bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 rounded-full flex items-center justify-center hover:scale-105 transition-all flex-shrink-0 shadow-lg">
+                      {isAudioLoading ? <Loader2 size={16} className="animate-spin" /> : isNarrating ? <Pause size={18} fill="currentColor" /> : <Play size={18} className="ml-1" fill="currentColor" />}
                     </button>
-                    <div className="flex-1 space-y-2 min-w-0">
-                      <div className="flex justify-between text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest overflow-hidden">
+                    <div className="flex-1 space-y-1.5 min-w-0">
+                      <div className="flex justify-between text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] overflow-hidden">
                         <span className="whitespace-nowrap">ARCHIVAL NARRATION</span>
                         <span className="tabular-nums whitespace-nowrap">{formatTime(audioCurrentTime)} / {formatTime(audioDuration)}</span>
                       </div>
-                      <div className="h-1.5 w-full bg-zinc-200 dark:bg-zinc-700/50 rounded-full overflow-hidden">
+                      <div className="h-1 w-full bg-zinc-200 dark:bg-zinc-700/50 rounded-full overflow-hidden">
                         <div className="h-full bg-zinc-900 dark:bg-zinc-50 transition-none" style={{ width: `${audioProgress}%` }} />
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => toggleReadStatus(selectedEvent.id)} className={`flex items-center gap-2 h-14 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-widest flex-shrink-0 transition-all ${readEvents.has(selectedEvent.id) ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-900 dark:border-zinc-100' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400'}`}>
-                    {readEvents.has(selectedEvent.id) ? <CheckCircle2 size={14} /> : <Circle size={14} />} <span>{readEvents.has(selectedEvent.id) ? 'EXAMINED' : 'MARK EXAMINED'}</span>
+                  
+                  <button 
+                    onClick={() => toggleReadStatus(selectedEvent.id)} 
+                    className={`flex items-center gap-3 h-16 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-[0.2em] flex-shrink-0 transition-all ${readEvents.has(selectedEvent.id) ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-900 dark:border-zinc-100 shadow-md' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600'}`}
+                  >
+                    {readEvents.has(selectedEvent.id) ? <CheckCircle2 size={16} /> : <Circle size={16} />} 
+                    <span>{readEvents.has(selectedEvent.id) ? 'EXAMINED' : 'MARK EXAMINED'}</span>
                   </button>
                 </div>
               </div>
@@ -741,6 +747,20 @@ const App: React.FC = () => {
                   <div className="w-full h-96 rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-xl bg-zinc-100 dark:bg-zinc-950">
                     <div ref={mapContainerRef} className="w-full h-full" />
                   </div>
+                </div>
+              )}
+
+              {selectedEvent.sources && selectedEvent.sources.length > 0 && (
+                <div className="pt-10 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">ARCHIVAL SOURCES</h4>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                    {selectedEvent.sources.map((source, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                        <BookOpen size={12} className="mt-0.5 flex-shrink-0" />
+                        <span>{source}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
